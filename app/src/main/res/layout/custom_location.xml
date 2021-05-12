@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--Change the width, height, scaleType to whatever you like-->
+<RelativeLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical|center"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:id="@+id/loca_icon"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:contentDescription="location Icon"
+        android:src="@drawable/ic_location_black_24dp"/>
+
+        <TextView
+            android:id="@+id/city_name_loca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_toRightOf="@+id/loca_icon"
+            android:text="Mumbai"/>
+
+            <TextView
+                android:id="@+id/state_loc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/city_name_loca"
+                android:layout_toRightOf="@+id/loca_icon"
+                android:textSize="12sp"
+                android:text="Maharashtra"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/state_loc"
+                android:layout_below="@+id/city_name_loca"
+                android:gravity="center_horizontal|center|center_vertical"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp"/>
+
+        </RelativeLayout>
+

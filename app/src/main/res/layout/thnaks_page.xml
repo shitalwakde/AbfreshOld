@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/new_gray_color"
+    android:layout_height="match_parent">
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/thank_icon"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerInside"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="gone"
+        app:lottie_rawRes="@raw/thanku"
+        />
+
+    <ProgressBar
+        android:id="@+id/thanks_pb"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:elevation="2dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"/>
+    <ImageView
+        android:id="@+id/logo_thank_page"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="120dp"
+        android:src="@drawable/new_logo_yellow"
+        android:layout_centerHorizontal="true"
+        />
+    <LinearLayout
+        android:id="@+id/thnk_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_below="@+id/logo_thank_page"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_20dp"
+            android:layout_marginEnd="@dimen/dimen_20dp"
+            android:src="@drawable/thanks_icon_new"/>
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Thank you"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="45dp"-->
+<!--            android:textColor="@color/newYellow"-->
+<!--            android:fontFamily="@font/roboto_bold"/>-->
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="for your purchase"-->
+<!--            android:gravity="center"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textSize="25dp"-->
+<!--            android:textColor="@color/newYellow"-->
+<!--            />-->
+    </LinearLayout>
+<Button
+    android:id="@+id/order_place_btn_tp"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_bg_new"
+    android:backgroundTint="@color/white"
+    android:layout_below="@+id/thnk_ll"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="30dp"
+    android:visibility="gone"
+    android:textColor="@color/newYellowBg"
+    android:text="Order Place"/>
+    <TextView
+        android:id="@+id/thaku_tm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="You can check your order status in My Orders Page"
+        android:gravity="center"
+        android:textSize="16dp"
+        android:textStyle="italic"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_below="@+id/order_place_btn_tp"
+        android:textColor="@color/black"
+        />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@+id/thaku_tm">
+    <Button
+        android:id="@+id/go_to_home_id"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="40dp"
+        android:background="@drawable/refer_btn_bg"
+        android:layout_below="@+id/thnk_ll"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginEnd="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/newYellow"
+        android:text="Home"/>
+    <Button
+        android:id="@+id/go_to_track_order"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="40dp"
+        android:background="@drawable/refer_btn_bg"
+        android:layout_below="@+id/thnk_ll"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:textColor="@color/newYellow"
+        android:text="Track Order"/>
+</LinearLayout>
+</RelativeLayout>

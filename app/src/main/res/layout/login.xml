@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/login_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:clickable="true"
+    android:background="@color/new_gray_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/close_login"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/cross_one"
+        android:tint="@color/newYellow"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/dimen_10dp"
+        />
+    <ProgressBar
+        android:id="@+id/loginpb"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="120dp"
+        android:elevation="6dp"
+        android:background="@android:color/transparent"
+        android:layout_centerHorizontal="true"
+        />
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text=""-->
+<!--        android:elevation="1dp"-->
+<!--        android:alpha=".4"-->
+<!--        android:background="@color/newYellowBg"/>-->
+<!--    <ImageView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:src="@drawable/big_bg"-->
+<!--        android:rotation="180"-->
+<!--        android:scaleType="centerCrop"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/login_txt"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="25sp"-->
+<!--        android:textColor="#fff"-->
+<!--        android:fontFamily="@font/lemon"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:paddingStart="25dp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:elevation="3dp"-->
+<!--        android:gravity="start"-->
+<!--        android:text="@string/app_name"/>-->
+    <ImageView
+        android:id="@+id/login_img"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="120dp"
+        android:src="@drawable/new_logo_yellow"
+        android:layout_centerHorizontal="true"
+       />
+
+<LinearLayout
+    android:id="@+id/login_ll_lay"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:elevation="5dp"
+    android:layout_below="@+id/login_img"
+    android:paddingBottom="10dp"
+    android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sign In / Sign Up"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:textColor="@color/newYellow"
+        android:gravity="center"
+        android:textSize="16sp"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/close_login"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="20dp"-->
+<!--        android:src="@drawable/login_cross_btn"-->
+<!--        android:tint="@android:color/darker_gray"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:elevation="5dp"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:padding="4dp"/>-->
+</RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+<!--        android:background="@drawable/log_new_bg"-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:orientation="vertical">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_mn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:clipChildren="false"
+        android:textColorHint="@color/new_gray_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/login_mn_et"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="3dp"
+            android:paddingStart="10dp"
+            android:hint="Mobile No.:"
+            android:inputType="number"
+            android:maxLength="10"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/newYellow"
+            android:background="@drawable/et_bg_new"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="14sp"
+            android:translationY="3dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/signin_btn"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/refer_btn_bg"
+            android:textColor="@color/newYellow"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginBottom="10dp"
+            android:text="Sign In"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/new_gray_color"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ProgressBar
+        android:id="@+id/cat_pro_pb"
+        android:layout_width="100dp"
+        android:elevation="10dp"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        />
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/category_product_rv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="60dp"
+    />
+</LinearLayout>
+</androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>

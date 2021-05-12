@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_item_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/new_gray_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:id="@+id/noitemfound_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:text="No Item Found"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/search_item_tolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat"
+        android:theme="@style/newToolbar"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
+        android:background="@color/new_gray_color"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp">
+
+
+            <EditText
+                android:id="@+id/editText_search_item"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:hint="Search"
+                android:paddingStart="20dp"
+                android:fontFamily="@font/poppins_medium"
+                android:background="@drawable/white_bg"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:textSize="14sp"
+                />
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_width="20dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:tint="@color/rippleColorHighlight"
+                android:src="@drawable/ic_search_icon"/>
+            <ImageView
+                android:id="@+id/search_item_selected_icon"
+                android:layout_width="25dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:visibility="gone"
+                android:tint="@color/rippleColorHighlight"
+                android:rotation="90"
+                android:src="@drawable/ic_keyboard_arrow_up_black_24dp"/>
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <RelativeLayout
+        android:id="@+id/ec_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:layout_below="@+id/search_item_tolbar"
+        >
+
+        <TextView
+            android:id="@+id/search_item_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/newYellow"
+            android:text="Explore by category"/>
+
+    <ImageView
+        android:id="@+id/search_item_line"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/search_item_tv"
+        android:src="@drawable/line"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_search_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_below="@+id/search_item_line"
+
+        />
+
+
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_chhoseitem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        android:layout_below="@+id/search_item_tolbar"
+
+        />
+</RelativeLayout>

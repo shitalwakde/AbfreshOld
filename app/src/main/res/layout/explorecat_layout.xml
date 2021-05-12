@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/cat_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginBottom="25dp"
+    android:elevation="5dp"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:focusable="true"
+    android:clickable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:id="@+id/cat_item_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_account"
+        android:transitionName="example_transition"
+        android:scaleType="fitXY"
+        android:duplicateParentState="true"
+        android:focusable="true"
+        />
+    <TextView
+        android:id="@+id/cat_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cat_item_image"
+        android:textColor="#fdcc03"
+        android:text="Name"
+        android:gravity="center_horizontal"
+        android:textSize="15sp"
+        android:layout_centerHorizontal="true"
+        android:duplicateParentState="true"
+        android:focusable="true"
+        android:layout_marginTop="5dp"/>
+</LinearLayout>
+
+
+

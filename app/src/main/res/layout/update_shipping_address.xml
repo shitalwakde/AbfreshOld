@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_gray_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/up_addrs_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_horizontal|center_vertical|center"
+        android:background="@color/new_gray_color"
+        android:theme="@style/newToolbar"
+        app:title=""
+        app:titleTextAppearance="@style/ActionBarTextAppearance"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/uda_home_btn"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/action_back"
+                android:src="@drawable/left_arrow_new"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="35dp"
+                android:layout_toEndOf="@+id/uda_home_btn"
+                >
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/action_back"
+                    android:src="@drawable/new_logo_yellow"/>
+            </RelativeLayout>
+
+        </RelativeLayout>
+        <!--        <TextView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:text="Shipping Address"-->
+        <!--            android:textColor="#fff"-->
+        <!--            android:textSize="16sp"-->
+        <!--            android:fontFamily="@font/poppins_medium"-->
+        <!--            android:layout_marginEnd="60dp"-->
+        <!--            app:titleTextAppearance="@style/ActionBarTextAppearance"-->
+        <!--            android:gravity="center|center_horizontal|center_vertical"/>-->
+    </androidx.appcompat.widget.Toolbar>
+    <TextView
+        android:id="@+id/uda_product_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_below="@+id/up_addrs_toolbar"
+        android:padding="@dimen/dimen_10dp"
+        android:text="Update Address"
+        android:textColor="@color/newYellow"
+        android:elevation="@dimen/dimen_10dp"
+        />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uda_product_name">
+
+
+    <LinearLayout
+        android:id="@+id/new_address_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+
+        android:layout_margin="@dimen/dimen_10dp"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add New Address"
+            android:visibility="gone"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line"
+            android:visibility="gone"
+            android:text=""
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:textColorHint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uda_ufn"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/et_bg_new"
+                android:backgroundTint="@color/newYellow"
+                android:hint="User Full Name"
+                android:inputType="text"
+
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="10dp"
+                android:textSize="14sp"
+                android:translationY="3dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:textColorHint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uda_mn"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/et_bg_new"
+                android:backgroundTint="@color/newYellow"
+                android:hint="Mobile Number"
+                android:inputType="number"
+                android:maxLength="10"
+                android:paddingStart="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp"
+                android:translationY="3dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_pincode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:textColorHint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uda_fn"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/et_bg_new"
+                android:backgroundTint="@color/newYellow"
+                android:hint="Flat,House no."
+                android:paddingStart="10dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"
+                android:translationY="3dp" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:textColorHint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uda_add"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/et_bg_new"
+                android:hint="Area,Colony,Street,Village"
+                android:backgroundTint="@color/newYellow"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp"
+                android:translationY="3dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:textColorHint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uda_address"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/et_bg_new"
+                android:hint="Address"
+                android:backgroundTint="@color/newYellow"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp"
+                android:translationY="3dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:textColorHint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uda_state"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/et_bg_new"
+                android:backgroundTint="@color/newYellow"
+                android:hint="State"
+                android:inputType="text"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:translationY="3dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:textColorHint="@color/black"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uda_city"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/et_bg_new"
+                android:backgroundTint="@color/newYellow"
+                android:hint="City"
+                android:inputType="text"
+                android:paddingStart="10dp"
+                android:paddingLeft="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp"
+                android:translationY="3dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_flatno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:textColorHint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/uda_pc"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/et_bg_new"
+                android:backgroundTint="@color/newYellow"
+                android:hint="Pincode"
+                android:inputType="number"
+                android:maxLength="6"
+                android:paddingStart="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:paddingLeft="10dp"
+                android:textSize="14sp"
+                android:translationY="3dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/update_addrs_btn"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:padding="10dp"
+            android:text="Update Address"
+            android:textColor="@color/newYellow"
+            android:background="@drawable/refer_btn_bg"
+            android:visibility="visible"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_medium"
+           />
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

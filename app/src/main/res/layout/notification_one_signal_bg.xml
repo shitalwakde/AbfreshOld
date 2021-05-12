@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:baselineAligned="false"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="3"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    android:layout_marginBottom="@dimen/dimen_10dp"
+    android:layout_gravity="center_vertical"
+    android:paddingStart="@dimen/dimen_10dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/time_os_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:visibility="gone"
+        android:textColor="@android:color/black"
+        android:text="AbFresh.in"/>
+    <TextView
+        android:id="@+id/head_os_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:textColor="@android:color/black"
+        android:text="AbFresh Khane ki tayari suru"/>
+    <TextView
+        android:id="@+id/dis_os_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="#000"
+        android:layout_marginBottom="5dp"
+        android:text="Discription"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:id="@+id/ivbanner"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/nos_iv"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:src="@drawable/new_logo_yellow"/>
+    </LinearLayout>
+</LinearLayout>

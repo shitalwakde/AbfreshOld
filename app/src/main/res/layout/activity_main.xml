@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/actvity_main_rl"
+    android:background="@color/yellow"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal|center_vertical|center"
+    >
+    <ProgressBar
+        android:id="@+id/splash_screen_progress_bar"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/black"/>
+<!--    <TextView-->
+<!--        android:id="@+id/wellcome"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginStart="5dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:layout_marginBottom="5dp"-->
+<!--        android:fontFamily="sans-serif"-->
+<!--        android:text="@string/app_name"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:gravity="center|center_vertical|center_horizontal"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:textColor="@android:color/black"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textStyle="bold" />-->
+    <ImageView
+        android:id="@+id/wellcome"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/yellowlogo"
+        android:scaleType="centerInside"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Jazz Eats Pvt Ltd"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:paddingBottom="30dp"
+        android:visibility="visible"/>
+<VideoView
+
+    android:id="@+id/video_view_splash"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:layout_centerInParent="true"
+    />
+</RelativeLayout>

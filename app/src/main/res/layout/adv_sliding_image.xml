@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="110dp"
+    android:padding="1dip"
+    android:id="@+id/frame2">
+
+    <ImageView
+        android:id="@+id/image_adv"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="centerCrop" />
+</FrameLayout>

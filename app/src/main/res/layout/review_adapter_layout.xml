@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="@dimen/dimen_16dp"
+        android:layout_height="@dimen/dimen_16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_above="@+id/review_name"
+        android:src="@drawable/commo_end_logo"/>
+    <RelativeLayout
+        android:id="@+id/rl_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="@dimen/dimen_16dp"
+            android:layout_height="@dimen/dimen_16dp"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:src="@drawable/comma_first"/>
+
+    <TextView
+        android:id="@+id/review_dis"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dimen_20dp"
+        android:lineSpacingExtra="5dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/newYellow"
+        android:layout_margin="@dimen/dimen_15dp"
+        android:text="@string/lorem"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/review_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginStart="40dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/rl_text"
+        android:textStyle="italic|bold"
+        android:textColor="@color/newYellow"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/dimen_20dp"
+        android:text="dharmendra"/>
+
+</RelativeLayout>

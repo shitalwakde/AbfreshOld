@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/noti_bg_new"
+    android:backgroundTint="@color/newYellow"
+    android:layout_marginBottom="5dp"
+    android:elevation="2dp"
+    android:paddingStart="10dp"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    android:paddingEnd="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <ImageView
+    android:id="@+id/nmsg_iv"
+    android:layout_width="60dp"
+    android:layout_height="40dp"
+    android:layout_centerHorizontal="true"
+    android:layout_centerInParent="true"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
+    android:visibility="gone"
+    android:layout_centerVertical="true"
+    android:layout_alignParentStart="true"
+    android:src="@drawable/logo_new"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/dimen_10dp"
+    android:layout_marginEnd="@dimen/dimen_10dp"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    android:layout_marginBottom="@dimen/dimen_10dp"
+    android:layout_centerVertical="true"
+    android:layout_toRightOf="@+id/nmsg_iv"
+   >
+    <TextView
+        android:id="@+id/not_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/newYellow"
+        android:maxLines="1"
+        android:text="Get all Kinds"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="7dp"
+        android:src="@drawable/new_yellow_line"/>
+    <TextView
+        android:id="@+id/not_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:maxLines="2"
+        android:textColor="@color/newYellow"
+        android:textStyle="italic"
+        android:layout_marginTop="7dp"
+        android:text="@string/lorem"/>
+
+</LinearLayout>
+
+    </RelativeLayout>

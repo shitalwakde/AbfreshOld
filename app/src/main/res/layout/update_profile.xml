@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/new_gray_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <ProgressBar
+        android:id="@+id/update_pb"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:elevation="2dp"
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"/>
+<!--    <androidx.appcompat.widget.Toolbar-->
+<!--        android:id="@+id/update_pro_toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="?attr/actionBarSize"-->
+<!--        app:contentInsetLeft="0dp"-->
+<!--        app:contentInsetStart="0dp"-->
+<!--        android:background="@drawable/toolbarnewbg"-->
+<!--        app:contentInsetStartWithNavigation="0dp"-->
+<!--        app:titleMarginStart="0dp"-->
+<!--        android:theme="@style/newToolbar"-->
+<!--        app:titleTextAppearance="@style/ActionBarTextAppearance"-->
+<!--        app:popupTheme="@style/AppTheme.PopupOverlay" >-->
+<!--&lt;!&ndash;        <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:text="Update Profile"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:textColor="#fff"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:textSize="16sp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginEnd="55dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            app:titleTextAppearance="@style/ActionBarTextAppearance"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:gravity="center|center_horizontal|center_vertical"/>&ndash;&gt;-->
+<!--    </androidx.appcompat.widget.Toolbar>-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/update_pro_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_scrollFlags="scroll|enterAlways"
+        android:background="@color/new_gray_color"
+        android:theme="@style/newToolbar"
+        app:title=""
+        app:contentInsetStart="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStartWithNavigation="0dp"
+        app:titleMarginStart="0dp"
+        app:titleMargin="0dp"
+        app:theme="@style/ThemeOverlay.AppCompat"
+        app:popupTheme="@style/AppTheme.PopupOverlay" >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/upro_home_btn"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/action_back"
+                android:src="@drawable/left_arrow_new"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/action_back"
+                android:layout_toEndOf="@+id/upro_home_btn"
+                android:src="@drawable/new_logo_yellow"/>
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginEnd="55dp"-->
+<!--                android:layout_toEndOf="@+id/upro_home_btn">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="Update Profile"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:elevation="@dimen/dimen_10dp"-->
+<!--                    />-->
+<!--            </RelativeLayout>-->
+
+        </RelativeLayout>
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="Update Profile"-->
+<!--            android:textColor="#fff"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_marginEnd="55dp"-->
+<!--            app:titleTextAppearance="@style/ActionBarTextAppearance"-->
+<!--            android:gravity="center|center_horizontal|center_vertical"/>-->
+    </androidx.appcompat.widget.Toolbar>
+    <RelativeLayout
+        android:id="@+id/up_name_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/update_pro_toolbar"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Update Profile"
+            android:padding="6dp"
+            android:textColor="@color/newYellow"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/up_name_rl"
+        android:layout_marginTop="15dp"
+        android:background="@color/new_gray_color"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="20dp"
+        >
+
+<RelativeLayout
+    android:id="@+id/update_account_img_rl"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="10dp"
+
+    >
+    <ImageView
+        android:id="@+id/camera_img_update"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="centerInside"
+        android:background="@drawable/account_edit_bg_new"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:elevation="2dp"
+        android:src="@drawable/plus_black"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/update_account_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:civ_circle_background_color="@color/black"
+        android:src="@drawable/account_pro_img_new"
+        app:civ_border_color="@color/newYellow"
+        app:civ_border_width="4dp" />
+</RelativeLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/update_username_TL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/update_account_img_rl"
+        android:clipChildren="false"
+        android:textColorHint="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/update_username"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/et_bg_new"
+            android:backgroundTint="@color/newYellow"
+            android:hint="User Full Name"
+            android:inputType="text"
+            android:textColorHint="@color/black"
+            android:fontFamily="@font/poppins_medium"
+            android:paddingStart="10dp"
+            android:textSize="14sp"
+            android:translationY="3dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/update_useremail_TL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_below="@+id/update_username_TL"
+        android:clipChildren="false"
+        android:textColorHint="@color/black">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/update_email"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/et_bg_new"
+            android:backgroundTint="@color/newYellow"
+            android:hint="Email Address"
+            android:fontFamily="@font/poppins_medium"
+            android:inputType="textWebEmailAddress"
+            android:paddingStart="10dp"
+            android:textSize="14sp"
+            android:translationY="3dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/update_usermobile_TL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_below="@+id/update_useremail_TL"
+            android:clipChildren="false"
+            android:textColorHint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/update_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/et_bg_new"
+                android:backgroundTint="@color/newYellow"
+                android:hint="Mobile"
+                android:textColor="@color/black"
+                android:enabled="false"
+                android:maxLength="10"
+                android:fontFamily="@font/poppins_medium"
+                android:inputType="number"
+                android:paddingStart="10dp"
+                android:textSize="14sp"
+                android:translationY="3dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+<!--    <RadioGroup-->
+<!--        android:id="@+id/update_gender_rg"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/update_useremail_TL"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:orientation="horizontal">-->
+<!--        <RadioButton-->
+<!--            android:id="@+id/radio_one"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="14sp"-->
+<!--            android:onClick="checkButton"-->
+<!--            android:textColor="@android:color/holo_red_dark"-->
+<!--            android:text="Male"/>-->
+<!--        <RadioButton-->
+<!--            android:id="@+id/radio_two"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:textSize="14sp"-->
+<!--            android:onClick="checkButton"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@android:color/holo_red_dark"-->
+<!--            android:text="Female"/>-->
+<!--    </RadioGroup>-->
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/update_add_TL"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/update_usermobile_TL"-->
+<!--        android:clipChildren="false">-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/update_Add"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:layout_margin="3dp"-->
+<!--            android:background="@drawable/size_bg"-->
+<!--            android:hint="Address"-->
+<!--            android:gravity="start"-->
+<!--            android:paddingStart="10dp"-->
+<!--            android:paddingTop="5dp"-->
+<!--            android:textSize="14sp"-->
+<!--            android:translationY="3dp" />-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/update_usermobile_TL">
+        <Button
+            android:id="@+id/update_btn"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:text="Update"
+            android:textSize="14sp"
+            android:layout_marginEnd="2dp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/newYellow"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:background="@drawable/refer_btn_bg"/>
+        <Button
+            android:id="@+id/chg_pass_btn_up"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Change Password"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="#FFA726"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:background="@drawable/account_btn_bg_new"
+           />
+<!--        <TextView-->
+<!--            android:id="@+id/chg_pass_btn_up"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textColor="@android:color/holo_red_dark"-->
+<!--            android:text="Change Password"/>-->
+    </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:id="@+id/card_recipe"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_margin="@dimen/dimen_10dp"
+    android:background="@drawable/et_bg_new"
+    android:backgroundTint="@color/newYellow"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+            <ImageView
+                android:id="@+id/rec_image"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                android:src="@drawable/fish_banner" />
+
+        <LinearLayout
+            android:id="@+id/old_ll_new"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/noti_bg_new"
+            android:visibility="gone"
+            android:padding="@dimen/dimen_10dp"
+            android:orientation="horizontal"
+
+            >
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="2.3"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical|center"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:paddingTop="5dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="5dp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="Attrachi Kurumulakittu Vechathu or Malabar Lamb with black peeper "
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_marginBottom="5dp"
+                android:paddingStart="10dp"
+                android:layout_gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom"
+                android:textStyle="italic"
+                android:textColor="#000"
+                android:text="Lunch"/>
+
+
+            </RelativeLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical|center_horizontal|center"
+                android:background="@android:color/darker_gray"/>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:tint="@color/black"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_history_new" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:paddingStart="5dp"
+                    android:textStyle="italic"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:text="0.55"/>
+
+
+            </RelativeLayout>
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical|center_horizontal|center"
+                android:background="@android:color/darker_gray"/>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:tint="@color/black"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/serves_icon" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:paddingStart="5dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    android:textStyle="italic"
+                    android:text="Serves : 4"/>
+
+
+            </RelativeLayout>
+
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen_15dp"
+            android:layout_marginStart="@dimen/dimen_15dp"
+            android:layout_marginEnd="@dimen/dimen_15dp"
+            android:layout_below="@+id/old_ll_new">
+            <TextView
+                android:id="@+id/rec_name"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical|center"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:paddingTop="5dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="5dp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:text="Lamb with black peeper sadasd "
+                />
+            <RelativeLayout
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                >
+                <ImageView
+                    android:id="@+id/recipe_time_iv"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:tint="@color/black"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/clock_n" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                >
+                <ImageView
+                    android:id="@+id/recipe_serves_iv"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:tint="@color/black"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/kata_n" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    <ImageView
+        android:id="@+id/line_one"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="@dimen/dimen_10dp"
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_below="@id/ll_one"
+        android:tint="@color/black"
+        android:src="@drawable/new_yellow_line"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="@dimen/dimen_15dp"
+        android:layout_marginEnd="@dimen/dimen_15dp"
+        android:layout_below="@+id/line_one">
+        <TextView
+            android:id="@+id/rec_type"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical|center"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:paddingStart="8dp"
+            android:paddingEnd="5dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="Lunch "/>
+
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:id="@+id/recipe_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/black"
+                android:text="0.55"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="@dimen/dimen_0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:id="@+id/recipe_serves_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:paddingStart="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/black"
+                android:text="Serves : 4"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+        </RelativeLayout>
+<!--<RelativeLayout android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:layout_marginStart="5dp"-->
+<!--android:layout_marginEnd="5dp"-->
+<!--android:layout_marginTop="5dp"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto">-->
+<!--</RelativeLayout>-->

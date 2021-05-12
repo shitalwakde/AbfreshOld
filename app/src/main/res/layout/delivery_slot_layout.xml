@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/new_gray_color">
+<!--    <include-->
+<!--        android:id="@+id/ds_toolbar"-->
+<!--        layout="@layout/new_toolbar"/>-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/ds_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_horizontal|center_vertical|center"
+        android:background="@color/new_gray_color"
+        android:theme="@style/newToolbar"
+        app:title=""
+        app:titleTextAppearance="@style/ActionBarTextAppearance"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/dslot_home_btn"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/action_back"
+                android:src="@drawable/left_arrow_new"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="55dp"
+                android:layout_toEndOf="@+id/dslot_home_btn">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/new_logo_yellow"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="Choose Delivery Slot"-->
+<!--            android:textColor="#fff"-->
+<!--            android:textSize="16sp"-->
+<!--            android:layout_marginEnd="60dp"-->
+<!--            app:titleTextAppearance="@style/ActionBarTextAppearance"-->
+<!--            android:gravity="center|center_horizontal|center_vertical"/>-->
+    </androidx.appcompat.widget.Toolbar>
+    <ProgressBar
+        android:id="@+id/cd_pd"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:elevation="10dp"
+        android:background="@android:color/transparent"
+        android:layout_centerInParent="true"/>
+    <RelativeLayout
+        android:id="@+id/dslot_product_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ds_toolbar"
+        android:background="@color/new_gray_color"
+        >
+
+        <TextView
+            android:id="@+id/dslot_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="6dp"
+            android:textColor="@color/newYellow"
+            android:text="Choose Delivery Slot"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            android:elevation="@dimen/dimen_10dp"
+            />
+    </RelativeLayout>
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_marginTop="15dp"
+    app:cardCornerRadius="5dp"
+    app:cardBackgroundColor="@color/new_gray_color"
+    android:layout_marginBottom="70dp"
+    android:layout_below="@+id/dslot_product_rl"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:gravity="center_horizontal|center|center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2 "
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Items Delivered Today"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" (Date)"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/selct_slot_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/newYellow"
+            android:background="@drawable/et_bg_new"
+            >
+
+            <TextView
+                android:id="@+id/slot_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Select Delivery Slot"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/id_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:paddingEnd="@dimen/dimen_10dp"
+                android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/delivery_sot_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_alignParentBottom="true"
+        >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:elevation="10dp"
+        android:background="@drawable/noti_bg_new"
+        android:backgroundTint="@color/newYellow"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/newYellow"
+                android:text="Total : "/>
+            <TextView
+                android:id="@+id/cd_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/newYellow"
+                android:text="₹500"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ds_Place_order_ll"
+            android:layout_width="wrap_content"
+            android:gravity="center|center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/newYellow"
+            android:background="@drawable/cart_btn_bg"
+            android:layout_marginEnd="@dimen/dimen_10dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="0dp"
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/plac_ord_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:layout_centerVertical="true"
+                android:duplicateParentState="true"
+                android:focusable="false"
+                android:clickable="false"
+                android:text="Place Order"/>
+            <ImageView
+                android:id="@+id/id_arrow_proceed"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_20dp"
+                android:layout_toEndOf="@+id/plac_ord_tv"
+                android:tint="@color/black"
+                android:duplicateParentState="true"
+                android:focusable="false"
+                android:layout_marginStart="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_15dp"
+                android:gravity="center|center_vertical|center_horizontal"
+                android:src="@drawable/cart_right_arrow"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

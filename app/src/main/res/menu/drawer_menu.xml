@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"  >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_category"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+
+        <item
+            android:id="@+id/nav_wishlistt"
+            android:icon="@drawable/ic_account"
+            android:title="Account" />
+        <item
+            android:id="@+id/nav_orderHistory"
+            android:icon="@drawable/ic_time"
+            android:title="My Order" />
+        <item
+            android:id="@+id/nav_wallet"
+            android:icon="@drawable/ic_wallet"
+            android:title="Rooster Wallet" />
+        <item
+            android:id="@+id/nav_Login"
+            android:icon="@drawable/ic_unlocked"
+            android:title="Login" />
+        <item
+            android:id="@+id/nav_notification"
+            android:icon="@drawable/ic_notification"
+            android:title="Notification" />
+        <item
+            android:id="@+id/nav_contactus"
+            android:icon="@drawable/ic_contact"
+            android:title="Contact us" />
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_conversation"
+            android:title="Chat with us"
+            />
+        <item
+            android:id="@+id/nav_untouched"
+            android:visible="false"
+            android:title="" />
+
+    </group>
+    <group >
+        <item
+            android:id="@+id/nav_paypal"
+            android:icon="@drawable/ic_paypal"
+            android:title="Paypal" />
+    </group>
+
+</menu>

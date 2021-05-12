@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/offers_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_horizontal|center_vertical|center"
+        android:background="@android:color/white"
+        android:theme="@style/newToolbar"
+        app:title=""
+        app:titleTextAppearance="@style/ActionBarTextAppearance"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/offer_home_btn"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/action_back"
+                android:src="@drawable/newarrow"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="55dp"
+                android:layout_toEndOf="@+id/offer_home_btn">
+                <TextView
+                    android:id="@+id/pd_product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="Offers"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@android:color/transparent"
+                    android:elevation="@dimen/dimen_10dp"
+                    />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/delivery_sot_rv"
+        android:layout_below="@+id/offers_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/com_soon_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coming Soon"
+        android:visibility="gone"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/dimen_16sp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

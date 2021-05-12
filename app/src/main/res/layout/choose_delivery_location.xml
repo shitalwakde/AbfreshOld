@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cdl_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:background="@color/new_gray_color"
+    android:focusableInTouchMode="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/choose_loca_tolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat"
+        android:theme="@style/newToolbar"
+        android:background="@color/new_gray_color"
+        >
+<!--        <ImageView-->
+<!--            android:id="@+id/home_btn_da"-->
+<!--            android:layout_width="35dp"-->
+<!--            android:layout_height="35dp"-->
+<!--            android:paddingEnd="10dp"-->
+<!--            android:paddingTop="10dp"-->
+<!--            android:paddingBottom="10dp"-->
+<!--            android:tint="@color/white"-->
+<!--            android:src="@drawable/left_arrow_new"/>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp">
+
+
+    <EditText
+        android:id="@+id/editTextSearch"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Choose delivery location"
+        android:paddingStart="20dp"
+        android:maxLines="1"
+        android:inputType="text"
+        android:imeOptions="actionDone"
+        android:fontFamily="@font/poppins_medium"
+        android:background="@drawable/white_bg"
+        android:textSize="14sp"
+         />
+        <ImageView
+            android:id="@+id/loca_search_icon"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:tint="@color/rippleColorHighlight"
+            android:layout_alignRight="@+id/editTextSearch"
+            android:src="@drawable/ic_search_icon"/>
+        <ImageView
+            android:id="@+id/loca_selected_icon"
+            android:layout_width="25dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:visibility="gone"
+            android:tint="@color/rippleColorHighlight"
+            android:layout_alignRight="@+id/editTextSearch"
+            android:rotation="90"
+            android:src="@drawable/ic_keyboard_arrow_up_black_24dp"/>
+    </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+    <RelativeLayout
+        android:id="@+id/use_my_cuurent_location_rl"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:elevation="2dp"
+       >
+
+        <ImageView
+            android:id="@+id/current_location_icon"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:tint="@color/falert_red"
+            android:src="@drawable/ic_my_current_location"/>
+        <TextView
+            android:id="@+id/use_my_cuurent_location"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginStart="14dp"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@android:color/white"
+            android:layout_toRightOf="@+id/current_location_icon"
+            android:text="Use my current location"/>
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:gravity="center|center_vertical|center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/newYellow"
+        android:textSize="13sp"
+        android:text="OR"/>
+    <LinearLayout
+        android:id="@+id/change_add_ll_cdl"
+        android:layout_width="200dp"
+        android:gravity="center|center_vertical|center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/newYellow"
+        android:background="@drawable/cart_btn_bg"
+        android:orientation="horizontal"
+        android:visibility="visible">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:gravity="center|center_vertical|center_horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            android:text="Change Address"/>
+
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="#CCCBCB"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/saved_add_dal_ll"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Saved Addresses"
+            android:textColor="@color/newYellow"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/current_saved_add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/current_saved_add_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/recent_search_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recent Searches"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/newYellow"
+                android:textStyle="bold"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:visibility="visible"
+                android:background="@color/colorGray"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_chhose_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

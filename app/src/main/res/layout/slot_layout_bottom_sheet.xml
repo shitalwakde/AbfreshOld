@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    android:id="@+id/design_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/new_gray_color"
+    style="@android:style/Theme.Material.Light.NoActionBar.Fullscreen"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Delivery Slot"
+        android:textColor="@color/newYellow"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:padding="6dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:textSize="16sp" />
+    <LinearLayout
+        android:id="@+id/tomorrow_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginBottom="@dimen/dimen_20dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/date_tomorrow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:padding="@dimen/dimen_10dp"
+            android:gravity="start"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textColor="@color/newYellow"
+            android:text="Tomorrow" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tomorrow_rv_par"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_10dp"/>
+
+    </LinearLayout>
+<LinearLayout
+    android:id="@+id/today_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_10dp"
+    android:layout_marginStart="@dimen/dimen_20dp"
+    android:layout_marginEnd="@dimen/dimen_20dp"
+    android:layout_marginBottom="@dimen/dimen_15dp"
+    android:visibility="visible"
+    android:background="@drawable/new_bg_with_yellow"
+    android:orientation="vertical">
+        <TextView
+            android:id="@+id/date_today"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="14sp"
+            android:padding="@dimen/dimen_10dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textColor="@color/newYellow"
+            android:text="Today " />
+
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/today_rv"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dimen_10dp"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:visibility="gone"
+        android:src="@drawable/line"/>
+</LinearLayout>
+
+
+
+
+
+</LinearLayout>
+</androidx.core.widget.NestedScrollView>

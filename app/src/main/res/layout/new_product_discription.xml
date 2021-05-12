@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_gray_color"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_toolbar_npd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/new_gray_color"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tab_toolbar_npd"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title=""
+            app:titleMarginStart="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/backbtn_npd"
+                    android:layout_width="25dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:padding="5dp"
+                    android:contentDescription="@string/action_back"
+                    android:src="@drawable/left_arrow_new" />
+
+                <ImageView
+                    android:id="@+id/tab_logo"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_toEndOf="@+id/backbtn_npd"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:contentDescription="@string/action_back"
+                    android:tint="@color/newYellow"
+                    android:src="@drawable/logo_new_black" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            app:contentScrim="@color/colorWhite"
+            android:visibility="gone"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|enterAlwaysCollapsed"
+            app:toolbarId="@id/toolbar">
+
+            <RelativeLayout
+                android:id="@+id/toolbar_rl_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginTop="80dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:minHeight="0dp"
+                android:visibility="gone"
+                android:orientation="vertical"
+                app:layout_collapseMode="pin"
+                app:layout_collapseParallaxMultiplier="0.7">
+
+            </RelativeLayout>
+
+            <!--<FrameLayout-->
+            <!--    android:layout_width="match_parent"-->
+            <!--    android:layout_height="?attr/actionBarSize"-->
+            <!--    android:background="@android:color/transparent"-->
+            <!--    app:layout_collapseMode="pin"-->
+            <!--    >-->
+
+
+
+            <!--            <com.ferfalk.simplesearchview.SimpleSearchView-->
+            <!--                android:id="@+id/searchView"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:background="@color/colorPrimary"-->
+            <!--                android:visibility="gone" />-->
+
+            <!--</FrameLayout>-->
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <RelativeLayout
+            android:id="@+id/loca_rl_npd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/tab_toolbar_line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:src="@drawable/line"
+                android:visibility="gone" />
+            <RelativeLayout
+                android:id="@+id/search_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                >
+                <RelativeLayout
+                    android:id="@+id/loca_rl_new_npd"
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="@dimen/dimen_20dp"
+                    android:layout_marginEnd="@dimen/dimen_20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:backgroundTint="@color/cardview_dark_background"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/tab_city_bg_new">
+                    <ImageView
+                        android:id="@+id/loca_icon"
+                        android:layout_width="35dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:tint="@color/newYellow"
+                        android:src="@drawable/ic_location_black_24dp"/>
+                    <TextView
+                        android:id="@+id/city_name_tab_loca_npd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textAllCaps="true"
+                        android:maxLines="2"
+                        android:layout_marginEnd="@dimen/dimen_20dp"
+                        android:ellipsize="end"
+                        android:layout_marginStart="5dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/loca_icon"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/newYellow"
+                        android:text="Mumbai "/>
+
+                    <TextView
+                        android:id="@+id/state_loc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/black"
+                        android:text=",Maharashtra"/>
+                    <TextView
+                        android:id="@+id/india_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/state_loc"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/newYellowBg"
+                        android:text=" India"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/dimen_10dp"
+                        android:tint="@color/newYellowBg"
+                        android:gravity="center_horizontal|center|center_vertical"
+                        android:src="@drawable/ic_keyboard_arrow_down_black_24dp"/>
+
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+       <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_hori_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+           android:background="#121212"
+           android:layout_marginTop="5dp"/>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+<FrameLayout
+    android:id="@+id/fragment_container_npd"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/app_bar_layout_toolbar_npd"
+    />
+
+    <LinearLayout
+        android:id="@+id/no_data_ll_npd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_no_data"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Sorry for Inconvenience.\nPlease Try After Some Time"/>
+    </LinearLayout>
+</RelativeLayout>

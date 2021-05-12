@@ -1,0 +1,157 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+<!--        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>-->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:textViewStyle">@style/PoppinsFont</item>
+
+    </style>
+    <style name="PoppinsFont" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+    </style>
+    <style name="SpinnerTheme" parent="android:Widget.Spinner">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:background">@drawable/spinner_background</item>
+    </style>
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/up_from_bottom</item>
+
+    </style>
+    <style name="FilledBoxEndIconTint" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="endIconTint">@color/black</item>
+    </style>
+    <style name="ActionButtonStyle" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">0dip</item>
+        <item name="android:paddingStart">0dip</item>
+        <item name="android:paddingEnd">12dip</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">12dp</item>
+    </style>
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/holo_red_light</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="statusBarBackground">@android:color/transparent</item>
+
+    </style>
+    <style name="radionbutton"
+        parent="Base.Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/radiobuttonstyle</item>
+    </style>
+    <style name="RadioButtonStyle" parent="AppTheme">
+        <item name="colorControlNormal">@color/newYellow</item>
+        <item name="colorAccent">@color/newYellow</item>
+        <item name="android:textColorSecondary">@color/newYellow</item>
+    </style>
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">11sp</item>
+    </style>
+    <style name="TextAppearance.Widget.TabWidget" parent="android:TextAppearance.Medium">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="newToolbar">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+        <item name="colorControlNormal">@color/falert_white</item>
+    </style>
+    <style name="ActionBarTextAppearance" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+    <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="iconPadding">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:minWidth">38dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">#fff</item>
+    </style>
+    <style name="myToast">
+        <item name="stColorBackground">@color/colorPrimary</item>
+        <item name="textColor">#fff</item>
+        <item name="stIconStart">@drawable/ic_right_black_24dp</item>
+        <item name="strokeColor">#000</item>
+        <item name="strokeWidth">3dp</item>
+        <item name="stLength">LONG</item>
+        <item name="cornerRadius">3dp</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">#fff</item>
+       <item name="stGravity">center</item>
+        <item name="stRadius">10dp</item>
+    </style>
+    <style name="mySizeToast">
+        <item name="stColorBackground">@color/yellow</item>
+        <item name="textColor">#000</item>
+         <item name="strokeColor">#fff</item>
+        <item name="strokeWidth">3dp</item>
+        <item name="stLength">LONG</item>
+        <item name="cornerRadius">3dp</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">#fff</item>
+        <item name="stGravity">center</item>
+        <item name="stRadius">10dp</item>
+    </style>
+
+    <style name="NavDrawerTextStyle" parent="Base.TextAppearance.AppCompat">
+        <item name="android:textColor">@color/cardview_dark_background</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:dividerPadding">0dp</item>
+        <item name="android:dividerHeight">0dp</item>
+        <item name="paddingEnd">0dp</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:background">@drawable/nav_draw_icon</item>
+        <item name="paddingStart">0dp</item>
+        <item name="listPreferredItemHeightSmall">10dp</item>
+        <item name="android:fontFamily">sans-serif</item>
+      </style>
+<!--    <style name="MyWhiteColorTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
+<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+<!--        <item name="colorAccent">@color/colorAccent</item>-->
+<!--        &lt;!&ndash;do this for changing the color&ndash;&gt;-->
+<!--        <item name="drawerArrowStyle">@style/DrawerHamburgerStyle</item>-->
+<!--    </style>-->
+    <style name="NavigationTheme" parent="AppTheme">
+        <item name="listPreferredItemHeightSmall">60dp</item><!-- menu item height- vary as u need -->
+    </style>
+
+
+    <style name="BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+<!--        <item name="itemBackground">@android:color/white</item>-->
+<!--        <item name="itemIconTint">@android:color/holo_red_dark</item>-->
+<!--        <item name="itemTextColor">@android:color/holo_red_dark</item>-->
+        <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigation.Overline</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigation.Overline</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="paddingStart">32dp</item>
+        <item name="paddingEnd">32dp</item>
+    </style>
+
+    <style name="TextAppearance.BottomNavigation.Overline" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="android:textSize">8sp</item>
+    </style>
+</resources>

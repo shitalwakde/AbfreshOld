@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#E11F1F</color>
+<!--    <color name="colorPrimaryDark">#FF9800</color>-->
+    <color name="colorPrimaryDark">#373435</color>
+    <color name="colorAccent">#F8BD33</color>
+    <color name="yellow">#fdcd08</color>
+
+
+    <color name="colorGray">#EDEAEA</color>
+    <color name="colorTheme">#FF9800</color>
+    <color name="colorgray">@android:color/darker_gray</color>
+    <color name="colorToolbar">#99000000</color>
+    <color name="colorWhite">#fff</color>
+    <color name="colorGreen">#59BB4C</color>
+    <color name="colorBg">#d0d0d0</color>
+    <color name="colorBgnew">#494848</color>
+    <color name="newYellowBg">#F8BD33</color>
+    <color name="newYellow">#ffcc2a</color>
+<!--    <color name="off_btn_color">#EFEEEE</color>-->
+    <color name="off_btn_color">#d0d0d0</color>
+    <color name="tab_color">#C6C5C5</color>
+    <color name="tab_color_selected">#9E6109</color>
+    <color name="tab_color_selected2">#000</color>
+    <color name="darker_yellow_color">#815308</color>
+    <color name="new_gray_color">#373435</color>
+    <color name="new_gray_color2">#706E6F</color>
+<!--    <color name="new_gray_color">#FF0000FF</color>-->
+</resources>

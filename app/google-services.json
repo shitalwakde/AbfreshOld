@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "186021455701",
+    "project_id": "abfresh-a88e5",
+    "storage_bucket": "abfresh-a88e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186021455701:android:1d7fdc35edb86af065f1dc",
+        "android_client_info": {
+          "package_name": "com.abfresh.in"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186021455701-74osfsfm8viish827tm7je7pmhnp606a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUfMSpeHcgql1QnSqzTEhoyGFfgPb2v2M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186021455701-74osfsfm8viish827tm7je7pmhnp606a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

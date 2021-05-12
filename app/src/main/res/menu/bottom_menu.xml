@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/bitem1"
+        android:title="Order"
+        android:iconTint="@android:color/holo_red_dark"
+        android:icon="@drawable/order_icon"/>
+
+    <item android:id="@+id/bitem4"
+        android:title="Store"
+        android:iconTint="@android:color/holo_red_dark"
+        android:icon="@drawable/store_icon"/>
+
+    <item android:id="@+id/bitem2"
+        android:title="Profile"
+        />
+
+    <item android:id="@+id/bitem3"
+        android:title="Order History"
+        android:iconTint="@android:color/holo_red_dark"
+        android:icon="@drawable/order_history"/>
+    <item android:id="@+id/bitem5"
+        android:title="Offers"
+        android:iconTint="@android:color/holo_red_dark"
+        android:icon="@drawable/offer"/>
+<!--    <item-->
+<!--        android:id="@+id/uncheckedItem"-->
+<!--        android:visible="false"-->
+<!--        android:title="" />-->
+
+</menu>
