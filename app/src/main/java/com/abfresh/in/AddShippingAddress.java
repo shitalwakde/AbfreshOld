@@ -218,7 +218,6 @@ public class AddShippingAddress extends AppCompatActivity {
 
                             }
 
-
                         }
 
                     } catch (JSONException e) {
@@ -288,8 +287,6 @@ public class AddShippingAddress extends AppCompatActivity {
                             Utility.Delivery_location_id = response.getString("delivery_location_id");
                             Log.w("DTAG", "Object Utility.MyAddress ===>" + Utility.MyAddress);
                             finish();
-
-
 
                         } else {
                             Toast.makeText(AddShippingAddress.this, response.getString("message"), Toast.LENGTH_SHORT).show();
@@ -481,8 +478,6 @@ public class AddShippingAddress extends AppCompatActivity {
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             AppController.getInstance().addRequestInQueue(savedAddRequest);
-            ;
-
 
         } catch (JSONException e) {
             e.printStackTrace();

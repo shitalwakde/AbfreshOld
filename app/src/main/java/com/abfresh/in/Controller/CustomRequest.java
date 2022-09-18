@@ -41,7 +41,7 @@ public class CustomRequest extends Request<JSONObject> {
         try {
             String jsonString=new String(response.data, HttpHeaderParser.parseCharset(response.headers));
 
-            return Response.success(new JSONObject(jsonString),HttpHeaderParser.parseCacheHeaders(response));
+            return Response.success(new JSONObject(jsonString) ,HttpHeaderParser.parseCacheHeaders(response));
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

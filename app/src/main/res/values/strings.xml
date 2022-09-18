@@ -1,17 +1,16 @@
 <resources>
     <string name="app_name">AbFresh</string>
-<!--    <string name="facebook_app_id">749975465912320</string>-->
-<!--    <string name="fb_login_protocol_scheme">fb749975465912320</string>-->
+    <!--    <string name="facebook_app_id">749975465912320</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb749975465912320</string>-->
     <!-- Anagha facebook id-->
     <string name="facebook_app_id">1519596071741278</string>
     <string name="fb_login_protocol_scheme">fb1519596071741278</string>
 
-<!-- Azaz Anfres facebook id-->
-<!--    <string name="facebook_app_id">177975000458823</string>-->
-<!--    <string name="fb_login_protocol_scheme">fb177975000458823</string>-->
+    <!-- Azaz Anfres facebook id-->
+    <!--    <string name="facebook_app_id">177975000458823</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb177975000458823</string>-->
 
     <string name="yellow_message">Lorem <b>ipsum dolor</b> sit amet, consectetur adipiscing elit</string>
-
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -24,7 +23,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-        <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
             sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat,
             quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
@@ -84,7 +83,6 @@
     <string name="lbl_set_profile_photo">Set profile image</string>
 
 
-
     <string name="Refer_heading">Refer friends across cities</string>
     <string name="Refer_heading_second">Your unique referal code is</string>
     <string name="Refer_heading_smsg">Tell a friend they get ₹.200 discount on min order value of ₹.500. You get ₹.200 MeatShop cash</string>
@@ -96,10 +94,19 @@
     <string name="app_name_wallet_toolbar">Recharge your Wallet</string>
     <string name="app_name_cash_plus">AbFresh Cash+</string>
 
-    <string name="refer_earn">Tell a friend they get Rs. 200 discount on min order value of Rs. 500, You get Rs. 200 <font color='#000000'><b>ABfresh</b></font> cash</string>
+    <string name="refer_earn">Tell a friend they get Rs. 200 discount on min order value of Rs. 500, You get Rs. 200 <font color='#323231'><b>ABfresh</b></font> cash</string>
     <string name="status">Status: <font color='#1aac15'><b>Completed</b></font></string>
     <string name="sign_in">New to Ab Fresh? <font color='#ffffff'><b>Sign Up</b></font></string>
     <string name="sign_up">New to Ab Fresh? <font color='#fdcd08'><b>Sign Up</b></font></string>
+    <string name="description">Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender the spring Chiken Curry Cuts from Skinless and tender the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from Skinless and tender, the spring Chiken Curry Cuts from</string>
+    <string name="Rs">\u20B9</string>
+    <string name="pdf_show_local_progress_title">Title</string>
+    <string name="pdf_show_local_progress_content">Content</string>
+    <string name="pdf_show_online_dialog_title">Title</string>
+    <string name="pdf_show_online_dialog_question">Question</string>
+    <string name="pdf_show_online_dialog_button_no">No</string>
+    <string name="pdf_show_online_dialog_button_yes">Yes</string>
+
 
     <string-array name="country_list">
         <item>India</item>
@@ -114,9 +121,11 @@
         <item>satara</item>
     </string-array>
     <string-array name="state_list">
-    <item>Maharashta</item>
-    <item>MadhyaPradesh</item>
-    <item>Gujrat</item>
-    <item>Delhi</item>
-</string-array>
+        <item>Maharashta</item>
+        <item>MadhyaPradesh</item>
+        <item>Gujrat</item>
+        <item>Delhi</item>
+    </string-array>
+
+
 </resources>

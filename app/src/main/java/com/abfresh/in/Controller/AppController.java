@@ -3,11 +3,26 @@ package com.abfresh.in.Controller;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import com.abfresh.in.MainActivity;
+import com.abfresh.in.NewProductDiscription;
+import com.abfresh.in.TabActivity;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.onesignal.OSNotification;
+import com.onesignal.OSNotificationOpenResult;
+import com.onesignal.OneSignal;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 //import androidx.lifecycle.Lifecycle;
 //import androidx.lifecycle.LifecycleEventObserver;
@@ -15,22 +30,6 @@ import android.util.Log;
 //import androidx.lifecycle.LifecycleOwner;
 //import androidx.lifecycle.OnLifecycleEvent;
 //import androidx.lifecycle.ProcessLifecycleOwner;
-
-import com.abfresh.in.MainActivity;
-import com.abfresh.in.NewProductDiscription;
-import com.abfresh.in.TabActivity;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.onesignal.OSNotification;
-import com.onesignal.OSNotificationOpenResult;
-import com.onesignal.OneSignal;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 //import net.one97.paytm.nativesdk.PaytmSDK;
 
@@ -50,10 +49,19 @@ public class AppController extends Application{
     private Context mContext;
     Boolean isInForeground,isVisiBle;
     String productId="",categoryId="";
+    private Picasso picasso;
+    private OkHttpClient okHttpClient;
+
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         //PaytmSDK.init(this);
+        /*Picasso picasso = Picasso.with(this);
+        picasso.setLoggingEnabled(true);
+
+        picasso.setIndicatorsEnabled(true);*/
         appController = this;
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -86,6 +94,7 @@ public class AppController extends Application{
         isInForeground = myProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
         isVisiBle = myProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
         Log.w("SHANTAG","App is in background==>"+isVisiBle);
+
     }
 //    public AppController(Context context) {
 //        mContext = context;
@@ -205,6 +214,9 @@ public class AppController extends Application{
 //
 //        Log.w("SHANTAG","App is in foreground");
 //    }
+
+
+
 }
 
 

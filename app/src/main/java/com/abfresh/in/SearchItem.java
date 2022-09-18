@@ -1,13 +1,16 @@
 package com.abfresh.in;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -16,25 +19,32 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.abfresh.in.Abfresh.activities.DashboardActivity;
+import com.abfresh.in.Abfresh.adapter.SearchCategoryAdapter;
+import com.abfresh.in.Abfresh.callback.CategoryCallbackLisener;
+import com.abfresh.in.Abfresh.model.HomeModel;
+import com.abfresh.in.Abfresh.utils.RestClient;
 import com.abfresh.in.Adapter.ExploreCatAdapter;
 import com.abfresh.in.Adapter.SearchItemAdapter;
 import com.abfresh.in.Controller.AppController;
 import com.abfresh.in.Controller.SessionManagement;
 import com.abfresh.in.Controller.Utility;
 import com.abfresh.in.Model.ArrayList;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,11 +53,19 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+
 import static com.abfresh.in.Controller.SessionManagement.KEY_City_ID;
 import static com.abfresh.in.Controller.SessionManagement.KEY_Pincode;
 import static com.abfresh.in.Controller.SessionManagement.KEY_USERID;
 
-public class SearchItem extends AppCompatActivity {
+public class SearchItem extends Fragment{
+
+
+    public static final int CAT_ADPT = 1;
+    public static final int CAT_PROD_ADPT = 2;
+    CategoryCallbackLisener categoryCallbackLisener;
     SessionManagement sessionManagement;
     private RecyclerView search_item_rv;
     private ExploreCatAdapter siAdapter;
@@ -58,27 +76,151 @@ public class SearchItem extends AppCompatActivity {
     java.util.ArrayList<ArrayList> item;
     private java.util.ArrayList<ArrayList> myitem;
     SearchItemAdapter searchAdapter;
-    ImageView search_item_line;
+    ImageView search_item_line, iv_back_arrow, iv_back;
     TextView noitemfound_tv;
     RelativeLayout ec_rl;
+    FragmentManager fragmentManager;
+    RelativeLayout rl_container, search_item_ll;
+
+
+
+    @Nullable
     @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.search_layout, container, false);
+
+        search_item_toolbar = (Toolbar)view.findViewById(R.id.search_item_tolbar);
+//        setSupportActionBar(search_item_toolbar);
+        init(view);
+        categoryCallbackLisener.invisibleToolbaar();
+        return view;
+    }
+
+
+    private void init(View view){
+        sessionManagement = new SessionManagement(getActivity());
+        search_item_rv = (RecyclerView)view.findViewById(R.id.recyclerView_search_item);
+        recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView_chhoseitem);
+        editText_search_item = (EditText)view.findViewById(R.id.editText_search_item);
+        search_item_line = (ImageView) view.findViewById(R.id.search_item_line);
+        iv_back_arrow = (ImageView) view.findViewById(R.id.iv_back_arrow);
+        iv_back = (ImageView) view.findViewById(R.id.iv_back);
+        noitemfound_tv = (TextView) view.findViewById(R.id.noitemfound_tv);
+        ec_rl = (RelativeLayout) view.findViewById(R.id.ec_rl);
+        rl_container=(RelativeLayout)view.findViewById(R.id.rl_container);
+        search_item_ll=(RelativeLayout)view.findViewById(R.id.search_item_ll);
+
+
+
+        Offers.offerClick=false;
+//        getSearchExploreCategory();
+        getHomeData();
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
+        iv_back_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
+
+        item = new java.util.ArrayList<ArrayList>();
+        editText_search_item.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+                if(editText_search_item.getText().toString().trim().length()==0){
+                    ec_rl.setVisibility(View.VISIBLE);
+
+                }else{
+                    recyclerView.setVisibility(View.VISIBLE);
+                    ec_rl.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(editText_search_item.getText().toString().trim().length()==0){
+
+                    ec_rl.setVisibility(View.VISIBLE);
+                }else{
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                    ec_rl.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //after the change calling the method and passing the search input
+                if(editText_search_item.getText().toString().trim().length()==0){
+                    search_item_rv.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    search_item_line.setVisibility(View.VISIBLE);
+
+                }else{
+                    recyclerView.setVisibility(View.VISIBLE);
+                    search_item_rv.setVisibility(View.GONE);
+                    search_item_line.setVisibility(View.GONE);
+
+//                    getSearchItem();
+                    getSearch();
+                }
+
+
+            }
+        });
+    }
+
+    /*@Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_layout);
         search_item_toolbar = (Toolbar)findViewById(R.id.search_item_tolbar);
         setSupportActionBar(search_item_toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+        fragmentManager = getSupportFragmentManager();
         sessionManagement = new SessionManagement(getApplicationContext());
         search_item_rv = (RecyclerView)findViewById(R.id.recyclerView_search_item);
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView_chhoseitem);
         editText_search_item = (EditText)findViewById(R.id.editText_search_item);
         search_item_line = (ImageView) findViewById(R.id.search_item_line);
+        iv_back_arrow = (ImageView) findViewById(R.id.iv_back_arrow);
+        iv_back = (ImageView) findViewById(R.id.iv_back);
         noitemfound_tv = (TextView) findViewById(R.id.noitemfound_tv);
         ec_rl = (RelativeLayout) findViewById(R.id.ec_rl);
+        rl_container=(RelativeLayout)findViewById(R.id.rl_container);
+        search_item_ll=(RelativeLayout)findViewById(R.id.search_item_ll);
+        rl_container.setVisibility(View.GONE);
+        search_item_ll.setVisibility(View.VISIBLE);
+
+
         Offers.offerClick=false;
-        getSearchExploreCategory();
+//        getSearchExploreCategory();
+        getHomeData();
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        iv_back_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         item = new java.util.ArrayList<ArrayList>();
         editText_search_item.addTextChangedListener(new TextWatcher() {
@@ -126,8 +268,8 @@ public class SearchItem extends AppCompatActivity {
                     search_item_rv.setVisibility(View.GONE);
                     search_item_line.setVisibility(View.GONE);
 
-                    getSearchItem();
-
+//                    getSearchItem();
+                    getSearch();
                 }
 
 
@@ -135,15 +277,52 @@ public class SearchItem extends AppCompatActivity {
         });
 
 
+    }*/
+
+
+    private void getSearch(){
+        sessionManagement = new SessionManagement(getActivity());
+        JsonObject jsonObject = new JsonObject();
+        String tempid= Settings.Secure.getString(getActivity().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        jsonObject.addProperty("temp_user_id",tempid);
+        jsonObject.addProperty( "user_id",sessionManagement.getUserDetails().get(KEY_USERID));
+        jsonObject.addProperty("city_id",sessionManagement.getUserDetails().get(KEY_City_ID));
+        jsonObject.addProperty("pincode",sessionManagement.getUserDetails().get(KEY_Pincode));
+        jsonObject.addProperty("search",editText_search_item.getText().toString());
+        Log.w("SRTAG", "response getcatObject "+jsonObject);
+
+        new RestClient().getApiService().search(jsonObject, new Callback<HomeModel>() {
+            @Override
+            public void success(HomeModel homeModel, retrofit.client.Response response) {
+                manageSearchAdapter(homeModel);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    private void manageSearchAdapter(HomeModel homeModel){
+        SearchCategoryAdapter adapter = new SearchCategoryAdapter(CAT_PROD_ADPT, categoryCallbackLisener, homeModel.getProductList());
+        recyclerView.setNestedScrollingEnabled(false);
+        final GridLayoutManager manager
+                = new GridLayoutManager(getActivity(),1);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(adapter);
+//                            cat_pro_pb.setVisibility(View.GONE);
+        ViewCompat.setNestedScrollingEnabled(recyclerView, false);
     }
 
 
 
     private void getSearchItem() {
         try {
-            sessionManagement = new SessionManagement(getApplicationContext());
+            sessionManagement = new SessionManagement(getActivity());
             JSONObject getcatObject = new JSONObject();
-            String tempid= Settings.Secure.getString(getApplication().getContentResolver(),
+            String tempid= Settings.Secure.getString(getActivity().getContentResolver(),
                     Settings.Secure.ANDROID_ID);
             getcatObject.put("temp_user_id",tempid);
             getcatObject.put( "user_id",sessionManagement.getUserDetails().get(KEY_USERID));
@@ -200,10 +379,10 @@ public class SearchItem extends AppCompatActivity {
 
                                 item.add(new com.abfresh.in.Model.ArrayList(catName,catproduct_amt,catImage,catgross_amt,catdiscount,catProductId,catProductGwt,catProductwt,catProductStock,is_in_cart,cart_qty) );
                             }
-                            searchAdapter = new SearchItemAdapter(getApplicationContext(), item);
+                            searchAdapter = new SearchItemAdapter(getActivity(), item);
                             recyclerView.setNestedScrollingEnabled(false);
                             final GridLayoutManager manager
-                                    = new GridLayoutManager(SearchItem.this,1);
+                                    = new GridLayoutManager(getActivity(),1);
                             recyclerView.setLayoutManager(manager);
                             recyclerView.setAdapter(searchAdapter);
 //                            cat_pro_pb.setVisibility(View.GONE);
@@ -215,7 +394,7 @@ public class SearchItem extends AppCompatActivity {
                                     String proId = item.get(position).getProductId();
                                     String catId = item.get(position).getProGross();
 
-                                    Intent intent = new Intent(SearchItem.this, NewProductDiscription.class);
+                                    Intent intent = new Intent(getActivity(), NewProductDiscription.class);
                                     intent.putExtra("categoryId",catId);
                                     intent.putExtra("productId",proId);
                                     Log.w("SNTAG","Cat==>"+catId+","+"proId==>"+proId);
@@ -303,7 +482,7 @@ public class SearchItem extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
 //                        cat_pro_pb.setVisibility(View.GONE);
-                        Toast.makeText(SearchItem.this, "Please try after some time", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Please try after some time", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -334,14 +513,54 @@ public class SearchItem extends AppCompatActivity {
 
 
     }
+    private void getHomeData(){
+        JsonObject jsonObject = new JsonObject();
+        String tempid = Settings.Secure.getString(getActivity().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        jsonObject.addProperty("temp_user_id", tempid);
+        jsonObject.addProperty("user_id", sessionManagement.getUserDetails().get(KEY_USERID));
+        jsonObject.addProperty("city_id", sessionManagement.getUserDetails().get(KEY_City_ID));
+        jsonObject.addProperty("pincode", sessionManagement.getUserDetails().get(KEY_Pincode));
+        jsonObject.addProperty("via", "Android");
 
+        new RestClient().getApiService().home(jsonObject, new Callback<HomeModel>() {
+            @Override
+            public void success(HomeModel homeModel, retrofit.client.Response response) {
+                if(homeModel.getSuccess().equalsIgnoreCase("1")){
+                    if(homeModel.getCategoryList() != null){
+                        manageDetail(homeModel);
+                    }
+
+                }else{
+                    Toast.makeText(getActivity(), homeModel.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
+    }
+
+
+    private void manageDetail(HomeModel homeModel){
+        if(homeModel.getCategoryList().size() != 0){
+            SearchCategoryAdapter adpcategory = new SearchCategoryAdapter(CAT_ADPT, categoryCallbackLisener, homeModel.getCategoryList());
+            final GridLayoutManager manager
+                    = new GridLayoutManager(getActivity(),3);
+
+            search_item_rv.setLayoutManager(manager);
+            search_item_rv.setAdapter(adpcategory);
+        }
+    }
 
 
     private void getSearchExploreCategory() {
         try {
-        sessionManagement = new SessionManagement(SearchItem.this);
+        sessionManagement = new SessionManagement(getActivity());
         JSONObject siTabJsonObjectNew = new JSONObject();
-        String tempid = Settings.Secure.getString(SearchItem.this.getContentResolver(),
+        String tempid = Settings.Secure.getString(getActivity().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
             siTabJsonObjectNew.put("temp_user_id", tempid);
             siTabJsonObjectNew.put("user_id", sessionManagement.getUserDetails().get(KEY_USERID));
@@ -377,9 +596,9 @@ public class SearchItem extends AppCompatActivity {
 
 
                         }
-                        siAdapter = new ExploreCatAdapter(SearchItem.this, sihorizontalList);
+                        siAdapter = new ExploreCatAdapter(getActivity(), sihorizontalList);
                         final GridLayoutManager manager
-                                 = new GridLayoutManager(SearchItem.this,2);
+                                 = new GridLayoutManager(getActivity(),3);
 
                         search_item_rv.setLayoutManager(manager);
                         search_item_rv.setAdapter(siAdapter);
@@ -388,12 +607,12 @@ public class SearchItem extends AppCompatActivity {
                             public void onBannerClick(int position, ImageView productImage) {
 //                                TabActivity.tabCurrentItem = position;
                                 AppController.tabCurrentItem = Integer.parseInt(sihorizontalList.get(position).getName());;
-                                Intent intent = new Intent(SearchItem.this, TabActivity.class);
+                                Intent intent = new Intent(getActivity(), TabActivity.class);
                                 intent.putExtra("ID", sihorizontalList.get(position).getName());
                                 intent.putExtra("image",sihorizontalList.get(position).getCatImage());
                                 Log.w("BTAG", "ImageURL "+sihorizontalList.get(position).getCatImage());
                                 ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                        SearchItem.this, productImage, ViewCompat.getTransitionName(productImage));
+                                        getActivity(), productImage, ViewCompat.getTransitionName(productImage));
                                 startActivity(intent, options.toBundle());
                             }
                         });
@@ -442,9 +661,19 @@ public class SearchItem extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if(id==android.R.id.home){
-            finish();
+            getActivity().finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof DashboardActivity) {
+            categoryCallbackLisener = (CategoryCallbackLisener) context;
+        }
+    }
+
+
 }

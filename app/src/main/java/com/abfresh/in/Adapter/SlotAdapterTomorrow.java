@@ -102,12 +102,12 @@ public class SlotAdapterTomorrow extends RecyclerView.Adapter<SlotAdapterTomorro
             }
         });
         if(row_index==position){
-            holder.parent_item_title.setTextColor(Color.parseColor("#ffffff"));
+            holder.parent_item_title.setTextColor(Color.parseColor("#323231"));
         }else{
-            holder.parent_item_title.setTextColor(Color.parseColor("#9E6109"));
+            holder.parent_item_title.setTextColor(Color.parseColor("#6d6d6d"));
         }
         if(! DeliverySlotBottomSheetDialog.clickbtn){
-            if(0==position){ holder.parent_item_title.setTextColor(Color.parseColor("#ffffff"));}
+            if(0==position){ holder.parent_item_title.setTextColor(Color.parseColor("#323231"));}
         }
 
     }

@@ -4,12 +4,9 @@ import java.util.ArrayList;
 
 public class Utility {
 
-//    public static String ServerUrl = "http://ourwaysolutions.com/demo/meat/restAPI/index.php/";
-//    public static String ServerUrl = "http://3.7.12.246/restAPI/index.php/";
-    public static String ServerUrl = "http://abfresh.in/restAPI/index.php/";
+//    public static String ServerUrl = "http://abfresh.in/restAPI/index.php/";
+    public static String ServerUrl = "http://3.7.12.246/dev/restAPI/index.php/";
 
-//    public static String webviewUrl = "http://3.7.12.246/home/";
-    public static String webviewUrl = "https://abfresh.in/home/";
     public static String ServerUsername = "Authorization";
     public static String ServerPassword = "Basic bWVhdDoxMTAw";
     public static String GoogleApi="https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyA2MstzpRrBbVFNMKBTM259X-OpvekWqxw&libraries=places&address=";
@@ -25,6 +22,8 @@ public class Utility {
     public static String MyAddressNew="";
     public static String Delivery_location_id="";
     public static String deliverySlot;
+    public static String deliveryArea;
+    public static String deliveryitemCount;
     public static String deliveryDay;
     public static String couponCode="";
     public static Boolean fromThanks=false;
@@ -56,6 +55,7 @@ public class Utility {
     public static  String MyOrderDetails = ServerUrl + "Order/myOrderDetails";
     public static  String getChecksum = ServerUrl + "Order/checksum";
     public static  String payemntResponse = ServerUrl + "Order/payemntResponse";
+    public static  String razorpaypayemntResponse = ServerUrl + "Order/razorpaypayemntResponse";
     public static  String getProfile = ServerUrl + "Profile/getProfile";
     public static  String updateProfile = ServerUrl + "Profile/updateProfile";
     public static  String Recipes = ServerUrl + "Home/recipes";
@@ -65,11 +65,7 @@ public class Utility {
     public static  String SaveLocation = ServerUrl + "Home/saveLocation";
     public static  String VerifyCityPincode = ServerUrl + "Home/verifyCityPincode";
     public static  String Notifications = ServerUrl + "Home/notifications";
-    public static  String BlogUrl = webviewUrl + "blog?app=yes";
-    public static  String FaqUrl = webviewUrl + "faq?app=yes";
-//    public static  String PrivacyUrl = webviewUrl + "privacy?app=yes";
     public static  String PrivacyUrl = ServerUrl + "Home/privacy";
-//    public static  String TermsConditionUrl = webviewUrl + "termsCondition?app=yes";
     public static  String TermsConditionUrl = ServerUrl + "Home/termsCondition";
 
 }

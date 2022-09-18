@@ -99,42 +99,15 @@ public class Container_Main_Class extends AppCompatActivity implements Navigatio
                 }
             }
         }, 100);
-//        getAboveMenu();
         sessionManagement = new SessionManagement(getApplicationContext());
         search_cmc_ll = (LinearLayout)findViewById(R.id.search_cmc_ll);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-//        toggle.setDrawerIndicatorEnabled(false);
-//        toolbar.setNavigationIcon(R.drawable.nav_draw_icon);
+
         search_icon_toolbar = (ImageView)findViewById(R.id.search_icon_toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//                if(Math.abs(verticalOffset)==appBarLayout.getTotalScrollRange()){
-//                    // Collapsed
-//                    search_icon_toolbar.setVisibility(View.VISIBLE);
-////                    Animation animation = AnimationUtils.loadAnimation(Container_Main_Class.this, R.anim.fade_in);
-////                    search_icon_toolbar.startAnimation(animation);
-//                }else if(verticalOffset==0){
-//                    // Expanded
-//                    search_cmc_ll.setVisibility(View.VISIBLE);
-////                    Animation animation = AnimationUtils.loadAnimation(Container_Main_Class.this, R.anim.fade_out);
-////                    search_icon_toolbar.startAnimation(animation);
-//                    search_icon_toolbar.setVisibility(View.GONE);
-//                }else{
-//                    search_cmc_ll.setVisibility(View.GONE);
-//                }
-//            }
-//        });
-//        search_icon_toolbar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                appBarLayout.setExpanded(true, true);
-//
-//            }
-//        });
+
         fragment_container = (FrameLayout)findViewById(R.id.fragment_container);
         mView = findViewById(R.id.customBottomBar);
         mView.setOnNavigationItemSelectedListener(bnListner);
@@ -146,18 +119,7 @@ public class Container_Main_Class extends AppCompatActivity implements Navigatio
              heartVector3 = (VectorMasterView) findViewById(R.id.fab4);
              heartVector4 = (VectorMasterView) findViewById(R.id.fab5);
         mlinId = (RelativeLayout)findViewById(R.id.lin_id);
-//        front_page_menu_rv = (RecyclerView)findViewById(R.id.front_page_menu_rv);
-//        bottomNavigation = (MeowBottomNavigation) findViewById(R.id.bottomview);
-//        bottomNavigation.add(new MeowBottomNavigation.Model(1,R.drawable.order_icon2));
-//        bottomNavigation.add(new MeowBottomNavigation.Model(2, R.drawable.ic_store));
-//        bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.ic_profile));
-//        bottomNavigation.add(new MeowBottomNavigation.Model(4, R.drawable.ic_order_history));
-//        bottomNavigation.add(new MeowBottomNavigation.Model(5, R.drawable.ic_offers));
-//        bottomNavigation.add(new MeowBottomNavigation.Model(5, R.drawable.ic_home));
-//        bottomNavigationView.setOnNavigationItemSelectedListener(navListner
 
-//        logo_txt = (TextView)findViewById(R.id.logo_txt);
-//        logo_txt.setVisibility(View.VISIBLE);
 
         menu_wallet_ll = (LinearLayout)findViewById(R.id.menu_wallet_ll);
         drawer_menu_ll = (LinearLayout)findViewById(R.id.drawer_menu_ll);
@@ -177,45 +139,29 @@ public class Container_Main_Class extends AppCompatActivity implements Navigatio
         privacy_ll = (LinearLayout) findViewById(R.id.privacy_ll);
         menu_joinnow_rl = (RelativeLayout) findViewById(R.id.menu_joinnow_rl);
 
-//        city_name_loca = (TextView) findViewById(R.id.city_name_loca_ml);
         cart_badge = (TextView) findViewById(R.id.cart_badge);
         join_now_tv = (TextView) findViewById(R.id.join_now_tv);
         myaccount_iv = (ImageView) findViewById(R.id.myaccount_iv);
         logout_ll_line = (ImageView) findViewById(R.id.logout_ll_line);
         my_whatsapp_iv = (ImageView) findViewById(R.id.my_whatsapp_iv);
-//        city_name_loca.setText(sessionManagement.getUserDetails().get(KEY_City));
         drawer = findViewById(R.id.drawer_layout);
 
-//        drawer.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         navigationView = findViewById(R.id.nav_view);
-//         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(Container_Main_Class.this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-//        drawer.openDrawer(Gravity.RIGHT);
         toggle.syncState();
-//        toggle.setDrawerIndicatorEnabled(false);
-//        toolbar.setNavigationIcon(R.drawable.nav_draw_icon);
-//        Drawable drawable= getResources().getDrawable(R.drawable.nav_draw_icon);
-//        Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-//        Drawable newdrawable = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 30, 30, true));
+
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_bar_logo);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_button);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new Container_Fragment()).commit();
-//            navigationView.setCheckedItem(R.id.nav_message);
         }
-//        SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
-//        spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
-//        spaceNavigationView.addSpaceItem(new SpaceItem("Order", R.drawable.order_icon));
-//        spaceNavigationView.addSpaceItem(new SpaceItem("Store", R.drawable.store_icon));
-//        spaceNavigationView.addSpaceItem(new SpaceItem("Order History", R.drawable.order_history));
-//        spaceNavigationView.addSpaceItem(new SpaceItem("Offers", R.drawable.offer));
+
 
         if(!(sessionManagement.isLoggedIn())){
             join_now_tv.setVisibility(View.VISIBLE);
@@ -453,13 +399,6 @@ public class Container_Main_Class extends AppCompatActivity implements Navigatio
             }
         });
 
-        blog_ll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Container_Main_Class.this,BlogActivity.class);
-                startActivity(intent);
-            }
-        });
 
 
 

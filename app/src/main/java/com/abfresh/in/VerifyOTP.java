@@ -1,18 +1,21 @@
 package com.abfresh.in;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -23,9 +26,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.abfresh.in.Abfresh.activities.DashboardActivity;
+import com.abfresh.in.Abfresh.model.UserModel;
+import com.abfresh.in.Abfresh.utils.RestClient;
+import com.abfresh.in.Controller.AppController;
 import com.abfresh.in.Controller.MySMSBroadcastReceiver;
-import com.abfresh.in.Controller.SmsListner;
-import com.abfresh.in.Controller.SmsReceiver;
+import com.abfresh.in.Controller.SessionManagement;
+import com.abfresh.in.Controller.Utility;
+import com.abfresh.in.Custom.CustomEditText;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -40,12 +48,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.abfresh.in.Controller.AppController;
-import com.abfresh.in.Controller.SessionManagement;
-import com.abfresh.in.Controller.Utility;
-import com.google.android.material.textfield.TextInputEditText;
-
-
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,79 +58,71 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+
+import static com.abfresh.in.Controller.SessionManagement.KEY_City_ID;
+import static com.abfresh.in.Controller.SessionManagement.KEY_Pincode;
+import static com.abfresh.in.Controller.SessionManagement.KEY_USERID;
+
 //import com.example.darubottle.R;
 
 
 public class VerifyOTP extends AppCompatActivity {
+
+    private static final String TAG = "VerifyOTP";
     private static final String OTP_REGEX = "[0-9]";
-    Button resend_otp_tv;
-    String mobileNumber;
-    TextInputEditText mobile_no,signup_pass_et;
-    EditText signup_otp_et;
-    TextView reg_btn,password_btn,otp_btn;
+    Button reg_btn;
+    CustomEditText signup_otp_et;
+    TextView resend_otp_tv,otp_btn;
     ProgressBar votppb;
-    ImageView close_reg;
+    ImageView close_reg, votp_imv;
     SessionManagement sessionManagement;
-    String fromPage;
     TextInputLayout signup_pass;
     Boolean clickFlag = true;
     LinearLayout otp_ll;
     MySMSBroadcastReceiver broadcastReceiver;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_layout);
-        mobile_no = (TextInputEditText)findViewById(R.id.signup_mn_et);
-        signup_otp_et = (EditText)findViewById(R.id.signup_otp_et);
-        signup_pass_et = (TextInputEditText)findViewById(R.id.signup_pass_et);
-
-        reg_btn = (TextView) findViewById(R.id.reg_btn);
-        resend_otp_tv = (Button) findViewById(R.id.resend_otp_tv);
-        password_btn = (TextView)findViewById(R.id.password_btn);
+        reg_btn = (Button) findViewById(R.id.reg_btn);
+        signup_otp_et=(CustomEditText)findViewById(R.id.signup_otp_et);
+        resend_otp_tv = (TextView) findViewById(R.id.resend_otp_tv);
         otp_ll = (LinearLayout) findViewById(R.id.otp_ll);
         otp_btn = (TextView)findViewById(R.id.otp_btn);
-        signup_pass = (TextInputLayout)findViewById(R.id.signup_pass);
-//        signup_otp = (TextInputLayout)findViewById(R.id.signup_otp);
         votppb = (ProgressBar)findViewById(R.id.votppb);
-        mobileNumber = getIntent().getStringExtra("mobileNumber");
-        mobile_no.setText(mobileNumber);
         close_reg = (ImageView)findViewById(R.id.close_reg);
+        votp_imv = (ImageView)findViewById(R.id.votp_imv);
         votppb.setVisibility(View.GONE);
-//        reg_btn.setEnabled(false);
-//        reg_btn.setTextColor(getResources().getColor(R.color.colorToolbar));
         sessionManagement = new SessionManagement(VerifyOTP.this);
-//        fromPage = getIntent().getStringExtra("fromPage");
-//        sessionManagement.
-//        signup_otp_et.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void afterTextChanged(Editable arg0) {
-//                enableSubmitIfReady();
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//        });
-//       signup_pass_et.addTextChangedListener(new TextWatcher() {
-//           @Override
-//           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//           }
-//
-//           @Override
-//           public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//           }
-//
-//           @Override
-//           public void afterTextChanged(Editable s) {
-//                enableSubmitIfReady1();
-//           }
-//       });
+
+        signup_otp_et.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                votp_imv.setVisibility(View.GONE);
+                return false;
+            }
+        });
+
+        signup_otp_et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    votp_imv.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+        });
+
+        signup_otp_et.setKeyboardListener(new CustomEditText.KeyboardHideListener() {
+            @Override
+            public void onKeyboardHide() {
+                votp_imv.setVisibility(View.VISIBLE);
+            }
+        });
+
         close_reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,14 +135,11 @@ public class VerifyOTP extends AppCompatActivity {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        //start your activity here
-
                         progressDialog.dismiss();
-                        finish();
+//                        finish();
+                        onBackPressed();
                     }
-
                 }, 1000);
-
 
             }
         });
@@ -155,28 +147,17 @@ public class VerifyOTP extends AppCompatActivity {
         resend_otp_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                votp_imv.setVisibility(View.VISIBLE);
                 try {
                 JSONObject resendObject =new JSONObject();
                     votppb.setVisibility(View.VISIBLE);
-
-                    if(mobile_no.getText().toString().trim().length()==0){
-//                        StyleableToast.makeText(VerifyOTP.this,"Please enter your Mobile Number", R.style.mySizeToast).show();
-                        Toast.makeText(VerifyOTP.this,"Please enter Mobile Number", Toast.LENGTH_SHORT).show();
-
-                        votppb.setVisibility(View.GONE);
-
-                    }else if (mobile_no.getText().toString().trim().length()!=10){
-//                        StyleableToast.makeText(VerifyOTP.this,"Please enter valid Mobile Number", R.style.mySizeToast).show();
-                        Toast.makeText(VerifyOTP.this,"Please enter valid Mobile Number", Toast.LENGTH_SHORT).show();
-
-                        votppb.setVisibility(View.GONE);
-                    }else{
-                        String tempid= Settings.Secure.getString(getContentResolver(),
-                                Settings.Secure.ANDROID_ID);
-                        resendObject.put( "temp_user_id",tempid);
-                        resendObject.put( "username",mobile_no.getText().toString().trim());
-
-                    }
+                    String tempid= Settings.Secure.getString(getContentResolver(),
+                            Settings.Secure.ANDROID_ID);
+                    resendObject.put( "temp_user_id",tempid);
+                    resendObject.put( "username",getIntent().getStringExtra("mobileNumber"));
+                    resendObject.put("pincode", sessionManagement.getUserDetails().get(KEY_Pincode));
+                    resendObject.put("city_id", sessionManagement.getUserDetails().get(KEY_City_ID));
+                    resendObject.put( "via","Android");
 
                     Log.w("VTAG","Verification resendObject"+resendObject);
 
@@ -184,7 +165,7 @@ public class VerifyOTP extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
-                                Log.w("VTAG","Verification Response"+response);
+                                Log.w("VTAG","resend Verification Response"+response);
 
                                 if ((response.getString("success")).equals("1")){
 
@@ -235,15 +216,27 @@ public class VerifyOTP extends AppCompatActivity {
         reg_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setFocusable(true);
+                //If no view currently has focus, create a new one, just so we can grab a window token from it
+                if (v == null) {
+                    v = new View(VerifyOTP.this);
+                }
+                InputMethodManager imm = (InputMethodManager) getBaseContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                votp_imv.setVisibility(View.VISIBLE);
                 try {
                 JSONObject votpObject = new JSONObject();
                     votppb.setVisibility(View.VISIBLE);
 
-                    votpObject.put("username",mobile_no.getText().toString().trim());
+                    votpObject.put("username",getIntent().getStringExtra("mobileNumber"));
+                    votpObject.put("via","Android");
                     if(clickFlag){
                         if(signup_otp_et.getText().toString().trim().equals("")){
+                            signup_otp_et.requestFocus();
+                            signup_otp_et.setError("Please Enter OTP");
 //                            StyleableToast.makeText(VerifyOTP.this,"Please Enter OTP", R.style.mySizeToast).show();
-                            Toast.makeText(VerifyOTP.this, "Please Enter OTP", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(VerifyOTP.this, "Please Enter OTP", Toast.LENGTH_SHORT).show();
 
                             votppb.setVisibility(View.GONE);
 
@@ -251,27 +244,14 @@ public class VerifyOTP extends AppCompatActivity {
                             String tempid= Settings.Secure.getString(getContentResolver(),
                                     Settings.Secure.ANDROID_ID);
                             votpObject.put( "temp_user_id",tempid);
-                            votpObject.put(    "username",mobile_no.getText().toString().trim());
+                            votpObject.put(    "username",getIntent().getStringExtra("mobileNumber"));
                             votpObject.put(    "otp",signup_otp_et.getText().toString().trim());
                             votpObject.put(    "verify_flag","Otp");
                             votpObject.put(    "Player_id",AppController.player_id);
+                            votpObject.put("pincode", sessionManagement.getUserDetails().get(KEY_Pincode));
+                            votpObject.put("city_id", sessionManagement.getUserDetails().get(KEY_City_ID));
+                            votpObject.put( "via","Android");
 
-                        }
-                    }else{
-                        if(signup_pass_et.getText().toString().trim().equals("")){
-//                            StyleableToast.makeText(VerifyOTP.this,"Please Enter Password", R.style.mySizeToast).show();
-                            Toast.makeText(VerifyOTP.this, "Please Enter Password", Toast.LENGTH_SHORT).show();
-
-                            votppb.setVisibility(View.GONE);
-
-                        }else{
-                            String tempid= Settings.Secure.getString(getContentResolver(),
-                                    Settings.Secure.ANDROID_ID);
-                            votpObject.put( "temp_user_id",tempid);
-                            votpObject.put(    "username",mobile_no.getText().toString().trim());
-                            votpObject.put(    "otp",signup_pass_et.getText().toString().trim());
-                            votpObject.put(    "verify_flag","Password");
-                            votpObject.put(    "Player_id",AppController.player_id);
                         }
                     }
 
@@ -280,18 +260,12 @@ public class VerifyOTP extends AppCompatActivity {
                     JsonObjectRequest votpRequest = new JsonObjectRequest(Request.Method.POST, Utility.VerifyOTP, votpObject, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Log.w("VTAG","Verification Response"+response);
                             try {
                                 if ((response.getString("success")).equals("1")){
                                     Toast.makeText(VerifyOTP.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-
-//                                    StyleableToast.makeText(VerifyOTP.this,response.getString("message"), R.style.mySizeToast).show();
-//                                    Utility.UserId = response.getString("user_id");
                                     sessionManagement.createLoginSession(response.getString("user_id"),response.getString("mobile"));
-
-//                                    HashMap<String, String> user = sessionManagement.getUserDetails();
-//                                    String userid = user.get(sessionManagement.KEY_USERID);
-//                                    Utility.UserId = userid;
-
+                                    sessionManagement.updateProfile(response.getString("name"),response.getString("email"),response.getString("mobile"), response.getString("profile_img"));
                                     if(Utility.FromCart){
 //
                                         finish();
@@ -303,13 +277,12 @@ public class VerifyOTP extends AppCompatActivity {
                                         finish();
                                     }else{
                                         finish();
-                                        Intent intent = new Intent(VerifyOTP.this,MyAccount.class);
-//
+//                                        Intent intent = new Intent(VerifyOTP.this,MyAccount.class);
+                                        Intent intent = new Intent(VerifyOTP.this, DashboardActivity.class);
                                         startActivity(intent);
                                         votppb.setVisibility(View.GONE);
-
+                                        getProfile();
                                     }
-
 
                                 }else{
                                     votppb.setVisibility(View.GONE);
@@ -350,68 +323,10 @@ public class VerifyOTP extends AppCompatActivity {
                     votppb.setVisibility(View.GONE);
 
                 }
-
-
-
             }
         });
 
-        password_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int color1 = getResources().getColor(R.color.colorPrimary);
-                int color2 = getResources().getColor(R.color.off_btn_color);
-                int color3 = getResources().getColor(R.color.tab_color_selected);
-                int color4 = getResources().getColor(R.color.black);
-//                password_btn.setBackgroundColor(color1);
-                password_btn.setTextColor(color3);
-//                otp_btn.setBackgroundColor(color2);
-                otp_btn.setTextColor(color4);
-                signup_pass.setVisibility(View.VISIBLE);
-//                signup_otp.setVisibility(View.GONE);
-                otp_ll.setVisibility(View.GONE);
-                clickFlag = false;
-                signup_otp_et.setText("");
-//                reg_btn.setEnabled(false);
-//                reg_btn.setTextColor(getResources().getColor(R.color.colorToolbar));
-            }
-        });
 
-        otp_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int color1 = getResources().getColor(R.color.colorPrimary);
-                int color2 = getResources().getColor(R.color.off_btn_color);
-                int color3 = getResources().getColor(R.color.tab_color_selected);
-                int color4 = getResources().getColor(R.color.black);
-//                otp_btn.setBackgroundColor(color1);
-                otp_btn.setTextColor(color3);
-//                password_btn.setBackgroundColor(color2);
-                password_btn.setTextColor(color4);
-                signup_pass.setVisibility(View.GONE);
-//                signup_otp.setVisibility(View.VISIBLE);
-                otp_ll.setVisibility(View.VISIBLE);
-                clickFlag =true;
-                signup_pass_et.setText("");
-//                reg_btn.setEnabled(false);
-//                reg_btn.setTextColor(getResources().getColor(R.color.colorToolbar));
-          }
-        });
-
-        if(!(sessionManagement.isLoggedIn())){
-            password_btn.setVisibility(View.GONE);
-            password_btn.setEnabled(true);
-        }else{
-            password_btn.setVisibility(View.VISIBLE);
-        }
-//        smsVerifyCatcher = new SmsVerifyCatcher(VerifyOTP.this, new OnSmsCatchListener<String>() {
-//            @Override
-//            public void onSmsCatch(String message) {
-//                String code = parseCode(message);//Parse verification code
-//                signup_otp_et.setText(code);//set code in edit text
-//                //then you can send verification code to server
-//            }
-//        });
         SmsRetrieverClient client = SmsRetriever.getClient(VerifyOTP.this /* context */);
         Task<Void> task = client.startSmsRetriever();
         task.addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -435,27 +350,6 @@ public class VerifyOTP extends AppCompatActivity {
 
                                     String code = parseCode(message);
                                     signup_otp_et.setText(code);
-
-//                                    Pattern pattern = Pattern.compile(VerifyOTP.OTP_REGEX);
-//                                    Matcher matcher = pattern.matcher(message);
-//
-//                                    while (matcher.find())
-//                                    {
-//                                        signup_otp_et.setText(matcher.group());
-//                                    }
-
-//                                    signup_otp_et.setText(message.substring(message.indexOf(":")+0,message.indexOf(":")+0));
-//                                    Pattern    pattern = Pattern.compile("\\p{Digit}");
-//                                    Matcher matcher = pattern.matcher(message);
-//                                    if(matcher.matches()) {
-//                                        // yay! alphanumeric!
-//                                        signup_otp_et.setText(message);
-//                                    }
-//                                    otp_textbox_two.setText(message.substring(message.indexOf(":")+3,message.indexOf(":")+4));
-//                                    otp_textbox_three.setText(message.substring(message.indexOf(":")+4,message.indexOf(":")+5));
-//                                    otp_textbox_four.setText(message.substring(message.indexOf(":")+5,message.indexOf(":")+6));
-                                    // Extract one-time code from the message and complete verification
-                                    // by sending the code back to your server.
                                     break;
                                 case CommonStatusCodes.TIMEOUT:
                                     // Waiting for SMS timed out (5 minutes)
@@ -480,6 +374,36 @@ public class VerifyOTP extends AppCompatActivity {
         });
     }
 
+
+
+    private void getProfile(){
+
+        JsonObject jsonObject = new JsonObject();
+        if(sessionManagement.getUserDetails().get(KEY_USERID) != null){
+            jsonObject.addProperty("user_id", sessionManagement.getUserDetails().get(KEY_USERID));
+            jsonObject.addProperty("city_id", sessionManagement.getUserDetails().get(KEY_City_ID));
+            jsonObject.addProperty("pincode", sessionManagement.getUserDetails().get(KEY_Pincode));
+            jsonObject.addProperty("via", "Android");
+        }
+
+        new RestClient().getApiService().getProfile(jsonObject, new Callback<UserModel>() {
+            @Override
+            public void success(UserModel userModel, retrofit.client.Response response) {
+                if(userModel.getSuccess().equals("1")){
+                    sessionManagement.getProfile(userModel.getProfile_img(),userModel.getWallet(), userModel.getReferal_code(), userModel.getShare_msg(), userModel.getDisplay_msg());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                error.printStackTrace();
+            }
+        });
+
+
+
+    }
+
     private String parseCode(String message) {
         Pattern p = Pattern.compile("\\b\\d{4}\\b");
         Matcher m = p.matcher(message);
@@ -490,45 +414,10 @@ public class VerifyOTP extends AppCompatActivity {
         return code;
     }
 
-    //    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        smsVerifyCatcher.onStart();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        smsVerifyCatcher.onStop();
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        smsVerifyCatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//    }
-//    private String parseCode(String message) {
-//        Pattern p = Pattern.compile("\\b\\d{6}\\b");
-//        Matcher m = p.matcher(message);
-//        String code = "";
-//        while (m.find()) {
-//            code = m.group(0);
-//        }
-//        return code;
-//    }
-    private void enableSubmitIfReady1() {
-        boolean isReady1 = signup_pass_et.getText().toString().length() >=4;
-        reg_btn.setEnabled(isReady1);
-        reg_btn.setTextColor(Color.WHITE);
-    }
-
-
-    private void enableSubmitIfReady() {
-        boolean isReady = signup_otp_et.getText().toString().length() ==4;
-
-            reg_btn.setEnabled(isReady);
-            reg_btn.setTextColor(Color.WHITE);
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        votp_imv.setVisibility(View.VISIBLE);
     }
 
     @Override

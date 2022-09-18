@@ -1,9 +1,5 @@
 package com.abfresh.in;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -28,13 +24,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.abfresh.in.Abfresh.activities.DashboardActivity;
 import com.abfresh.in.Controller.AppSignatureHelper;
-import com.airbnb.lottie.LottieAnimationView;
 import com.abfresh.in.Controller.LocationManagerInterface;
 import com.abfresh.in.Controller.SessionManagement;
 import com.abfresh.in.Controller.SmartLocationManager;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
+import com.airbnb.lottie.LottieAnimationView;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -64,31 +63,19 @@ public class MainActivity extends AppCompatActivity implements LocationManagerIn
         session = new SessionManagement(getApplicationContext());
         AppSignatureHelper appSignatureHelper = new AppSignatureHelper(MainActivity.this);
         Log.w("BTAG","key "+ appSignatureHelper.getAppSignatures().get(0));
-        getCurrentVersion();
+
+//        getCurrentVersion();
+        doRegularProcess();
 
         VideoView videoView = findViewById(R.id.video_view_splash);
         String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.splash_video;
         Uri uri = Uri.parse(videoPath);
         videoView.setVideoURI(uri);
         MediaController mediaController = new MediaController(this);
-//        videoView.setMediaController(mediaController);
         mediaController.setAnchorView(videoView);
         videoView.start();
         actvity_main_rl = (RelativeLayout)findViewById(R.id.actvity_main_rl);
-        // Check for permission
-        ///delete this when  getCurrentVersion(); is uncommented
-//        doRegularProcess();
 
-
-
-//        mLocationManager = new SmartLocationManager(getApplicationContext(), MainActivity.this, MainActivity.this, SmartLocationManager.ALL_PROVIDERS, LocationRequest.PRIORITY_HIGH_ACCURACY, 10 * 1000, 1 * 1000, SmartLocationManager.LOCATION_PROVIDER_RESTRICTION_NONE);
-//        mLocationManager.startLocationFetching();
-              //  session.checkLogin();
-//            session.getUserDetails().get(KEY_USERID);
-
-        // Start lengthy operation in a background thread
-
-//        Utility.UserId = "0";
     }
 
     private void doRegularProcess() {
@@ -100,20 +87,46 @@ public class MainActivity extends AppCompatActivity implements LocationManagerIn
                     Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED
                     ||ContextCompat.checkSelfPermission(MainActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED
+                    ||ContextCompat.checkSelfPermission(MainActivity.this,
                     Manifest.permission.READ_PHONE_STATE)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                         this, // Activity
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_PHONE_STATE},
-                        MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_PHONE_STATE}, MY_PERMISSIONS_REQUEST_FINE_LOCATION);
             }else {
+
+                Thread timerThread = new Thread() {
+                    public void run() {
+                        try {
+                            //todo change this tym
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } finally {
+                            Intent i=new Intent(MainActivity.this, DashboardActivity.class);
+                            // Closing all the Activities
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                            // Add new Flag to start new Activity
+                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                            // Staring Login Activity
+                            startActivity(i);
+                            finish();
+                        }
+                    }
+                };
+                timerThread.start();
                 new Thread(new Runnable() {
                     public void run() {
                         doWork();
                         if(!(session.isLoggedIn())){
                             startApp();
                         }else {
-                            Intent i = new Intent(MainActivity.this, Container_Main_Class.class);
+                            Intent i = new Intent(MainActivity.this, DashboardActivity.class);
                             // Closing all the Activities
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -136,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements LocationManagerIn
                     if(!(session.isLoggedIn())){
                         startApp();
                     }else {
-                        Intent i = new Intent(MainActivity.this, Container_Main_Class.class);
+                        Intent i = new Intent(MainActivity.this, DashboardActivity.class);
                         // Closing all the Activities
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -159,27 +172,28 @@ public class MainActivity extends AppCompatActivity implements LocationManagerIn
         if (session.pincode().equals("")){
             firstTime = true;
             Intent intent = new Intent(MainActivity.this,Location_Text_Intent.class);
+            intent.putExtra("activity", "DashboardActivity");
             startActivity(intent);
             finish();
         }else {
-            Intent i = new Intent(MainActivity.this, Container_Main_Class.class);
-            // Closing all the Activities
+            Intent i = new Intent(MainActivity.this, DashboardActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            // Add new Flag to start new Activity
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-            // Staring Login Activity
             startActivity(i);
             finish();
+            /*Intent i = new Intent(MainActivity.this, Container_Main_Class.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+            finish();*/
         }
 
-//        mProgress.setVisibility(G);
     }
 
     private void doWork() {
         for (int progress=0; progress<20; progress+=2) {
             try {
-                Thread.sleep(300);
+                Thread.sleep(100);
                 mProgress.setProgress(progress);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -209,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements LocationManagerIn
                             if(!(session.isLoggedIn())){
                                 startApp();
                             }else {
-                                Intent i = new Intent(MainActivity.this, Container_Main_Class.class);
+                                Intent i = new Intent(MainActivity.this, DashboardActivity.class);
                                 // Closing all the Activities
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -232,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements LocationManagerIn
                             if(!(session.isLoggedIn())){
                                 startApp();
                             }else {
-                                Intent i = new Intent(MainActivity.this, Container_Main_Class.class);
+                                Intent i = new Intent(MainActivity.this, DashboardActivity.class);
                                 // Closing all the Activities
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

@@ -63,23 +63,11 @@
                 </RelativeLayout>
 
             </RelativeLayout>
-<!--            <TextView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="Privacy Policy"-->
-<!--                android:textColor="#fff"-->
-<!--                android:textSize="16sp"-->
-<!--                android:layout_marginEnd="55dp"-->
-<!--                app:titleTextAppearance="@style/ActionBarTextAppearance"-->
-<!--                android:gravity="center|center_horizontal|center_vertical"/>-->
+
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
-<!--    <WebView-->
-<!--        android:id="@+id/pp_webview"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_below="@+id/appbar_pp"/>-->
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

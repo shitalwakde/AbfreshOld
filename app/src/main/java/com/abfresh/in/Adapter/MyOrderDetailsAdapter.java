@@ -48,7 +48,7 @@ public class MyOrderDetailsAdapter extends RecyclerView.Adapter<MyOrderDetailsAd
     public void onBindViewHolder(@NonNull MyOrderDetailsAdapter.ViewHolder holder, int position) {
 
         holder.mod_brand_name.setText(mOrdertList.get(position).getCart_id());
-        Picasso.with(Context).load(mOrdertList.get(position).getCart_qty()).fit().into(holder.mod_cart_image);
+        Picasso.with(Context).load(mOrdertList.get(position).getCart_qty()).error(R.drawable.loading_spinner).fit().into(holder.mod_cart_image);
         holder.mod_weight.setText(mOrdertList.get(position).getProduct_name());
         holder.mod_price.setText("₹"+mOrdertList.get(position).getProduct_gross_amt());
         holder.mod_price_gross.setText("₹"+mOrdertList.get(position).getProduct_discount());

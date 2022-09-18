@@ -64,8 +64,10 @@ public class MyOrderDetails extends AppCompatActivity {
     LinearLayout cancel_btn_mod;
     TextView track_sum_tv,mod_discount;
     Button view_pdf_btn;
-     String invoice_url;
+    String invoice_url;
     TextView order_place_message_tv,order_process_message_tv,order_out_message_tv,order_delivered_message_tv,mod_payment_status;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,50 +142,18 @@ public class MyOrderDetails extends AppCompatActivity {
                 Intent intent = new Intent(MyOrderDetails.this,MyInvoice.class);
                 intent.putExtra("myUrl",invoice_url);
                 startActivity(intent);
-//                if(invoice_url.trim().length()!=0){
-//
-//                    Uri uri = Uri.parse(invoice_url); // missing 'http://' will cause crashed
-////                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                    Intent intent = new Intent(Intent.ACTION_VIEW);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    intent.setDataAndType(uri, "application/pdf");
-//                    try{
-//                        startActivity(intent);
-//                    }catch (ActivityNotFoundException e){
-//
-//                    }
-//
-//
-////                    Intent intent = new Intent(MyOrderDetails.this,InvoicesWebView.class);
-////                    intent.putExtra("invoice_url_new",invoice_url);
-////                    startActivity(intent);
-////                    Intent intent = new Intent(Intent.ACTION_VIEW);
-////
-////                    intent.setDataAndType(Uri.parse("https://www.tutorialspoint.com/java/java_tutorial.pdf"), "text/html");
-////
-////                    startActivity(intent);
-//                }else{
-//
-//                    Toast.makeText(MyOrderDetails.this, "No PDF Found", Toast.LENGTH_SHORT).show();
-//                }
-
             }
         });
     }
 
     private void getCancelOrder() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-
         builder.setTitle("Alert!");
 
-        //Setting message manually and performing action on button click
         builder.setMessage("Do you really want to cancel an order?");
-        //This will not allow to close dialogbox until user selects an option
         builder.setCancelable(false);
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-//                Toast.makeText(this, "positive button", Toast.LENGTH_SHORT).show();
 
                 try {
                     JSONObject coObject = new JSONObject();
@@ -231,21 +201,15 @@ public class MyOrderDetails extends AppCompatActivity {
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //  Action for 'NO' Button
-//                Toast.makeText(this, "negative button", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }
         });
 
-        //Creating dialog box
         AlertDialog alert = builder.create();
-        //Setting the title manually
-        //alert.setTitle("AlertDialogExample");
         alert.show();
         }
 
     private void getOrderDetails() {
-
 
         try {
             myorderdetail_pb.setVisibility(View.VISIBLE);
@@ -268,34 +232,24 @@ public class MyOrderDetails extends AppCompatActivity {
 
                             String order_status = response.getString("order_status");
                             if(order_status.trim().equals("Pending")){
-//                                view_pdf_btn.setVisibility(View.GONE);
                                 track_sum_tv.setVisibility(View.VISIBLE);
                                 mod_order_status.setTextColor(MyOrderDetails.this.getResources().getColor(R.color.colorGreen));
-//                                mod_order_status.setBackground(MyOrderDetails.this.getResources().getDrawable(R.drawable.container_btn_bg_new));
                             }else if(order_status.trim().equals("Processing")){
-//                                view_pdf_btn.setVisibility(View.GONE);
-//                                holder.mo_cancel_order.setVisibility(View.GONE);
                                 track_sum_tv.setVisibility(View.VISIBLE);
                                 mod_order_status.setTextColor(MyOrderDetails.this.getResources().getColor(R.color.white));
-//                                mod_order_status.setBackground(MyOrderDetails.this.getResources().getDrawable(R.drawable.container_btn_bg_new));
                             }else if(order_status.trim().equals("Delivered")){
-//                                view_pdf_btn.setVisibility(View.VISIBLE);
                                 cancel_rl.setVisibility(View.GONE);
                                 track_sum_tv.setVisibility(View.VISIBLE);
                                 mod_order_status.setTextColor(MyOrderDetails.this.getResources().getColor(R.color.newYellow));
-//                                mod_order_status.setBackground(MyOrderDetails.this.getResources().getDrawable(R.drawable.container_btn_bg_new));
                             }else{
-//                                view_pdf_btn.setVisibility(View.GONE);
                                 cancel_rl.setVisibility(View.GONE);
                                 track_sum_tv.setVisibility(View.GONE);
                                 mod_order_status.setTextColor(MyOrderDetails.this.getResources().getColor(R.color.colorPrimary));
-//                                mod_order_status.setBackground(MyOrderDetails.this.getResources().getDrawable(R.drawable.container_btn_bg_new));
                             }
                            mod_wallet_used.setText("₹"+response.getString("wallet_pay"));
                             mod_payment_type.setText(response.getString("order_payment_type_short"));
                             mod_total_amount.setText("₹"+response.getString("order_amount"));
                             mod_order_amount.setText("₹"+response.getString("gross_amount")) ;
-//                            mod_delivery_date2.setText(response.getString("delivery_date"));
                             mod_purchase_amount.setText("₹"+response.getString("gross_amount"));
                             mod_discount.setText("₹"+response.getString("discount"));
                             mod_delivery_charges.setText("₹"+response.getString("delivery_charge"));
@@ -350,19 +304,12 @@ public class MyOrderDetails extends AppCompatActivity {
                             my_order_details_rv.setNestedScrollingEnabled(false);
                             myorderdetail_pb.setVisibility(View.GONE);
 
-//                            ImageView order_placed_iv,order_process_iv,order_out_iv,order_delivered_iv;
-//                            TextView order_placed_line_tv,order_process_line_tv,order_out_line_tv,order_place_tv;
-//                            TextView order_process_tv,order_out_tv,order_deliverd_tv;
-
                             if(response.getString("place_order").equals("Yes")){
                                 order_animation_ll.setVisibility(View.VISIBLE);
-//                                view_pdf_btn.setVisibility(View.VISIBLE);
                             }else{
                                 order_animation_ll.setVisibility(View.GONE);
-//                                view_pdf_btn.setVisibility(View.GONE);
                             }
                              if(response.getString("order_process").equals("Yes")){
-//                                order_animation_ll.setVisibility(View.VISIBLE);
                                 order_process_tv.setTextColor(getResources().getColor(R.color.newYellow));
                                 order_placed_line_tv.setBackgroundColor(getResources().getColor(R.color.newYellow));
                                 order_process_iv.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_check_new));
@@ -390,7 +337,6 @@ public class MyOrderDetails extends AppCompatActivity {
                                  order_delivered_message_tv.setBackgroundDrawable(getResources().getDrawable(R.drawable.my_order_details_orderbg));
                             }
                              if(response.getString("out_of_delivery").equals("Yes")){
-//                                order_animation_ll.setVisibility(View.VISIBLE);
                                 order_process_tv.setTextColor(getResources().getColor(R.color.newYellow));
                                 order_placed_line_tv.setBackgroundColor(getResources().getColor(R.color.newYellow));
                                 order_process_iv.setBackgroundDrawable(getResources().getDrawable(R.drawable.ic_check_new));

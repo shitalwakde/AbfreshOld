@@ -2,7 +2,21 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 //apply plugin: 'com.google.gms.google-services'
 
+repositories {
+    mavenCentral()
+}
+
+
+
 android {
+    signingConfigs {
+        abfresh {
+            storeFile file('D:\\MobileProject\\Android\\Data\\Abfresh data\\Abfresh Jks file\\abfresh.jks')
+            storePassword 'pass123'
+            keyAlias 'key0'
+            keyPassword 'pass123'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
     compileOptions {
@@ -20,6 +34,7 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude("META-INF/*.kotlin_module")
     }
+
     defaultConfig {
         applicationId "com.abfresh.in"
         minSdkVersion 23
@@ -54,15 +69,16 @@ android {
 
 }
 
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    testImplementation 'junit:junit:4.13.2'
 
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.airbnb.android:lottie:3.3.0'
     implementation 'com.github.Ferfalk:SimpleSearchView:0.1.5'
@@ -82,37 +98,46 @@ dependencies {
     implementation 'me.henrytao:smooth-app-bar-layout:25.3.1.0'
     implementation 'com.muddzdev:styleabletoast:2.2.3'
     implementation 'com.github.Far5had70:Falert:3.6.0'
-    implementation 'com.android.volley:volley:1.1.1'
-//    implementation 'com.paytm:pgplussdk:1.4.4'
-    implementation'com.paytm.appinvokesdk:appinvokesdk:1.5.3'
+    implementation 'com.android.volley:volley:1.2.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation'com.paytm.appinvokesdk:appinvokesdk:1.6.0'
     implementation 'com.sdsmdg.harjot:vectormaster:1.1.3'
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
-//    implementation('com.paytm:pgplussdk:1.4.4') {
-//        transitive = true;
-//    }
-//    implementation "com.paytm.nativesdk:core:1.0.5"
-    implementation 'com.onesignal:OneSignal:3.+@aar'
+    implementation 'com.onesignal:OneSignal:3.16.0@aar'
     implementation 'com.github.smarteist:autoimageslider:1.3.9'
 
     // Required for OneSignal, even if you have added FCM.
-    implementation 'com.google.android.gms:play-services-gcm:+'
+    implementation 'com.google.android.gms:play-services-gcm:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+
 
     // Required for geotagging
-    implementation "com.google.android.gms:play-services-location:+"
-    implementation 'com.google.android.gms:play-services-basement:17.4.0'
+    implementation "com.google.android.gms:play-services-location:18.0.0"
+    implementation 'com.google.android.gms:play-services-basement:17.6.0'
 
-//    implementation 'com.google.android.gms:play-services-base:17.3.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.chauthai.overscroll:overscroll-bouncy:0.1.1'
     implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'com.borjabravo:readmoretextview:2.1.0'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
-//    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
     implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
     implementation 'com.facebook.android:facebook-marketing:4.42.0'
     implementation 'org.jsoup:jsoup:1.11.3'
     implementation 'es.voghdev.pdfviewpager:library:1.1.2'
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation 'com.google.android.gms:play-services-auth-api-phone:17.4.0'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.1'
+    implementation 'com.squareup.retrofit:retrofit:1.9.0'
+    implementation 'com.squareup.okhttp:okhttp:2.6.0'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+    implementation 'com.intuit.sdp:sdp-android:1.0.4'
+    // razorpay
+//    implementation 'com.razorpay:checkout:1.6.10'
+    implementation 'com.razorpay:razorpay-java:1.3.9'
+
+    implementation 'com.mindorks.android:prdownloader:0.6.0'
+
+
+
 }

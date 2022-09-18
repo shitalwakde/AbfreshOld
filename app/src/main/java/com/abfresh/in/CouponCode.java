@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,17 +45,25 @@ public class CouponCode extends AppCompatActivity {
     RecyclerView ccd_rv;
     CouponAdapter couponAdapter;
     java.util.ArrayList<ArrayList> CcList;
-    ImageView ccd_home_btn;
+    ImageView iv_back_arrow;
     LinearLayout no_data_ll_ccd;
-    TextView submit_mcoupon_tv;
+    TextView submit_mcoupon_tv, tv_toolbar_title;
     EditText manual_code_et;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.coupon_custom_dialog);
+
+        Toolbar toolbar = findViewById(R.id.toolbar_new);
+        setSupportActionBar(toolbar);
+        tv_toolbar_title=(TextView)findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("Coupons");
+
         sessionManagement = new SessionManagement(getApplicationContext());
         ccd_rv = (RecyclerView)findViewById(R.id.ccd_rv);
-        ccd_home_btn = (ImageView) findViewById(R.id.ccd_home_btn);
+        iv_back_arrow = (ImageView) findViewById(R.id.iv_back_arrow);
         ccd_pb = (ProgressBar) findViewById(R.id.ccd_pb);
         no_data_ll_ccd = (LinearLayout) findViewById(R.id.no_data_ll_ccd);
         manual_code_et = (EditText) findViewById(R.id.manual_code_et);
@@ -71,7 +80,8 @@ public class CouponCode extends AppCompatActivity {
                 }
             }
         });
-        ccd_home_btn.setOnClickListener(new View.OnClickListener() {
+
+        iv_back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

@@ -1,10 +1,12 @@
 package com.abfresh.in;
 
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,19 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.abfresh.in.Controller.AppController;
+import com.abfresh.in.Controller.SessionManagement;
+import com.abfresh.in.Controller.Utility;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.abfresh.in.Controller.AppController;
-import com.abfresh.in.Controller.SessionManagement;
-import com.abfresh.in.Controller.Utility;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -43,109 +44,83 @@ import static com.abfresh.in.Controller.SessionManagement.KEY_USERID;
 public class MyAccount extends AppCompatActivity {
     SessionManagement session;
     Button logout_btn;
-    String fromPage;
-    LinearLayout update_profile_ll,join_now_adv,count_ll;
-    TextView account_mobile,account_name,account_email,ma_wallet_balance,order_count_tv;
-    CircleImageView  profile_Image;
+    LinearLayout join_now_adv,count_ll;
+    TextView account_mobile,account_name,account_email,ma_wallet_balance,order_count_tv, tv_toolbar_title;
+    CircleImageView  profile_Image, camera_img;
     ProgressBar myaccount_pb;
-    ImageView ma_home_btn;
+    ImageView iv_back_arrow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.myaccount_activity);
 
-        Toolbar toolbar=(Toolbar)findViewById(R.id.myaccount_toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar_new);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
-//        Toast.makeText(this,""+ Utility.FromMainClass, Toast.LENGTH_SHORT).show();
+        tv_toolbar_title=(TextView)findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("My Account");
 
         session = new SessionManagement(getApplicationContext());
         logout_btn = (Button)findViewById(R.id.logout_btn);
-        update_profile_ll = (LinearLayout)findViewById(R.id.update_profile);
         join_now_adv = (LinearLayout)findViewById(R.id.join_now_adv);
         count_ll = (LinearLayout)findViewById(R.id.count_ll);
-
+        iv_back_arrow=(ImageView)findViewById(R.id.iv_back_arrow);
         account_mobile = (TextView) findViewById(R.id.account_mobile);
         account_name = (TextView) findViewById(R.id.account_name);
         order_count_tv = (TextView) findViewById(R.id.order_count_tv);
         account_email = (TextView) findViewById(R.id.account_email);
         ma_wallet_balance = (TextView) findViewById(R.id.ma_wallet_balance);
         profile_Image = (CircleImageView) findViewById(R.id.account_img);
+        camera_img = (CircleImageView) findViewById(R.id.camera_img_update);
         myaccount_pb = (ProgressBar)findViewById(R.id.myaccount_pb);
-        ma_home_btn = (ImageView) findViewById(R.id.ma_home_btn);
-//        account_mobile.setText(session.getUserDetails().get(KEY_MOBILE));
-//        fromPage = getIntent().getStringExtra("fromPage");
-        update_profile_ll.setOnClickListener(new View.OnClickListener() {
+
+        iv_back_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        camera_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MyAccount.this,UpdateProfile.class);
                 startActivity(intent);
             }
         });
+
         logout_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Dialog dialog = new Dialog(MyAccount.this);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setCancelable(false);
+                dialog.setContentView(R.layout.dlg_exit);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                TextView tv_yes=(TextView)dialog.findViewById(R.id.tv_yes);
+                TextView tv_no=(TextView)dialog.findViewById(R.id.tv_no);
+                TextView tv_sure=(TextView)dialog.findViewById(R.id.tv_sure);
 
-//                final AlertDialog.Builder builder = new AlertDialog.Builder(MyAccount.this);
-//
-//
-//                builder.setTitle("Alert!");
-//
-//                //Setting message manually and performing action on button click
-//                builder.setMessage("Do you really want to Logout?");
-//                //This will not allow to close dialogbox until user selects an option
-//                builder.setCancelable(false);
-//                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-////                Toast.makeText(this, "positive button", Toast.LENGTH_SHORT).show();
-//                        session.logoutUser();
-//                        Intent intent = new Intent(MyAccount.this,Location_Text_Intent.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);                // Add new Flag to start new Activity
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(intent);
-//                        MainActivity.locationget = true;
-//                        Utility.CartCount=0;
-//                    }
-//                });
-//                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        //  Action for 'NO' Button
-//                        dialog.cancel();
-//                    }
-//                });
-//
-//                //Creating dialog box
-//                AlertDialog alert = builder.create();
-//                alert.show();
+                tv_sure.setText("Are you sure you want to logout?");
 
-                LayoutInflater factory = LayoutInflater.from(MyAccount.this);
-                final View deleteDialogView = factory.inflate(R.layout.logout_custom_dialog, null);
-                final AlertDialog deleteDialog = new AlertDialog.Builder(MyAccount.this).create();
-                deleteDialog.setView(deleteDialogView);
-                deleteDialogView.findViewById(R.id.lcd_yes_tv).setOnClickListener(new View.OnClickListener() {
+                tv_yes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                Toast.makeText(this, "positive button", Toast.LENGTH_SHORT).show();
                         session.logoutUser();
-                        Intent intent = new Intent(MyAccount.this,Location_Text_Intent.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);                // Add new Flag to start new Activity
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
                         MainActivity.locationget = true;
                         Utility.CartCount=0;
-                        deleteDialog.dismiss();
+                        dialog.dismiss();
                     }
                 });
-                deleteDialogView.findViewById(R.id.lcd_no_tv).setOnClickListener(new View.OnClickListener() {
+
+                tv_no.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deleteDialog.dismiss();
+                        dialog.dismiss();
                     }
                 });
-                deleteDialog.show();
+
+                dialog.show();
             }
         });
 
@@ -155,22 +130,6 @@ public class MyAccount extends AppCompatActivity {
         }else{
             join_now_adv.setVisibility(View.GONE);
         }
-//        if(account_name.getText().toString().trim().length()==0){
-//            Intent intent = new Intent(MyAccount.this,UpdateProfile.class);
-//            startActivity(intent);
-//        }else{
-//
-//        }
-
-        ma_home_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyAccount.this,Container_Main_Class.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         count_ll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,7 +138,6 @@ public class MyAccount extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        session.checkLogin();
     }
 
     @Override

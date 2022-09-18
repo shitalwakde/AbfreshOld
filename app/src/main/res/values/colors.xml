@@ -2,8 +2,8 @@
 <resources>
     <color name="colorPrimary">#E11F1F</color>
 <!--    <color name="colorPrimaryDark">#FF9800</color>-->
-    <color name="colorPrimaryDark">#373435</color>
-    <color name="colorAccent">#F8BD33</color>
+    <color name="colorPrimaryDark">#fdcd08</color>
+    <color name="colorAccent">#fdcd08</color>
     <color name="yellow">#fdcd08</color>
 
 
@@ -19,6 +19,8 @@
     <color name="newYellow">#ffcc2a</color>
 <!--    <color name="off_btn_color">#EFEEEE</color>-->
     <color name="off_btn_color">#d0d0d0</color>
+    <color name="off_color">#ECE8E8</color>
+    <color name="off_dark_color">#F3F1F1</color>
     <color name="tab_color">#C6C5C5</color>
     <color name="tab_color_selected">#9E6109</color>
     <color name="tab_color_selected2">#000</color>
@@ -26,4 +28,26 @@
     <color name="new_gray_color">#373435</color>
     <color name="new_gray_color2">#706E6F</color>
 <!--    <color name="new_gray_color">#FF0000FF</color>-->
+
+
+    <color name="purple_200">#fdcd08</color>
+    <color name="purple_500">#fdcd08</color>
+    <color name="purple_700">#FFFFFF</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="grey">#bab7b7</color>
+    <color name="greydark">#6d6d6d</color>
+    <color name="greydarker">#323231</color>
+    <color name="white">#fefefe</color>
+    <color name="transparant">#00FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="bg">#fafafa</color>
+    <color name="bg_grey">#F6F6F6</color>
+    <color name="icon">#818181</color>
+    <color name="border">#f47443</color>
+    <color name="navigation_bar_txt_color">#595757</color>
+    <color name="green">#1aac15</color>
+    <color name="darkgreen">#084E05</color>
+    <color name="greenfaint">#8BC34A</color>
+    <color name="red_text">#d31b1b</color>
 </resources>

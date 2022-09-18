@@ -467,7 +467,7 @@ public class Delivery_Address extends AppCompatActivity implements LocationManag
 
 //                            Toast.makeText(Delivery_Address.this,response.getString("message"), Toast.LENGTH_SHORT).show();
                             AppController.completeAddress = address+" "+city_name+","+state+","+"India";
-                            sessionManagement.addFullAddress(AppController.completeAddress);
+                            sessionManagement.addFullAddress(AppController.completeAddress, "");
                             finish();
 //                            progressDialog.dismiss();
                         } else {
@@ -582,7 +582,7 @@ public class Delivery_Address extends AppCompatActivity implements LocationManag
                                             sessionManagement.updateCity(cityNewArrayID.get(i), cityNewArray.get(i),stateNewName, postalCode);
 
                                             AppController.completeAddress = maddresses.get(0).getAddressLine(0);
-                                            sessionManagement.addFullAddress(AppController.completeAddress);
+                                            sessionManagement.addFullAddress(AppController.completeAddress, maddresses.get(0).getAdminArea());
                                             saveCurrentLoca(cityNewArrayID.get(i),cityNewArray.get(i),stateNewName,postalCode);
 //                                            Intent intent = new Intent(Delivery_Address.this, Container_Main_Class.class);
 //                                            startActivity(intent);
@@ -601,7 +601,7 @@ public class Delivery_Address extends AppCompatActivity implements LocationManag
                                         }
                                     } else {
 //                                        progressDialog.dismiss();
-                                        getGoogleCityByPincode(maddresses.get(0).getAddressLine(0));
+                                        getGoogleCityByPincode(maddresses.get(0).getAddressLine(0), maddresses.get(0).getAdminArea());
 
                                     }
                                 }
@@ -683,7 +683,7 @@ public class Delivery_Address extends AppCompatActivity implements LocationManag
             e.printStackTrace();
         }
     }
-    private void getGoogleCityByPincode(String addressLine) {
+    private void getGoogleCityByPincode(String addressLine, String adminArea) {
         apiloc="";
         apilocNew="1";
         apilocNewError="1";
@@ -706,7 +706,7 @@ public class Delivery_Address extends AppCompatActivity implements LocationManag
                                         if (cityNewArrayID.get(k).length() != 0) {
                                             sessionManagement.updateCity(cityNewArrayID.get(k), cityNewArray.get(k),stateNewName, postalCode);
                                             AppController.completeAddress = addressLine;
-                                            sessionManagement.addFullAddress(AppController.completeAddress);
+                                            sessionManagement.addFullAddress(AppController.completeAddress, adminArea);
                                             saveCurrentLoca(cityNewArrayID.get(k),cityNewArray.get(k),stateNewName,postalCode);
 //                                            Intent intent = new Intent(Delivery_Address.this, Container_Main_Class.class);
 //                                            startActivity(intent);

@@ -50,7 +50,7 @@ import static com.abfresh.in.Controller.SessionManagement.KEY_USERID;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class DeliverySlotBottomSheetDialog extends BottomSheetDialogFragment {
-    TextView slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10;
+    TextView slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9,slot10, tv_close;
     public static BottomSheetListener mListener;
     public static DeliverySlotBottomSheetDialog activity;
     SessionManagement sessionManagement;
@@ -78,11 +78,19 @@ public class DeliverySlotBottomSheetDialog extends BottomSheetDialogFragment {
 //------------------Today Slots-------------------------
         date_today = (TextView)v.findViewById(R.id.date_today);
         date_tomorrow = (TextView)v.findViewById(R.id.date_tomorrow);
+        tv_close=(TextView)v.findViewById(R.id.tv_close);
         arraySlotDate = new ArrayList<>();
         today_rv = (RecyclerView) v.findViewById(R.id.today_rv);
         tomorrow_rv_par = (RecyclerView) v.findViewById(R.id.tomorrow_rv_par);
         today_ll = (LinearLayout) v.findViewById(R.id.today_ll);
         tomorrow_ll = (LinearLayout) v.findViewById(R.id.tomorrow_ll);
+
+        tv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.dismiss();
+            }
+        });
 
     getSlots();
     

@@ -1,5 +1,6 @@
 package com.abfresh.in;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -18,6 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.abfresh.in.Abfresh.activities.WalletActivity;
+import com.abfresh.in.Controller.AppController;
+import com.abfresh.in.Controller.CustomRequest;
+import com.abfresh.in.Controller.SessionManagement;
+import com.abfresh.in.Controller.Utility;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -25,13 +31,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.gson.Gson;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import com.paytm.pgsdk.TransactionManager;
-import com.abfresh.in.Controller.AppController;
-import com.abfresh.in.Controller.CustomRequest;
-import com.abfresh.in.Controller.SessionManagement;
-import com.abfresh.in.Controller.Utility;
+import com.razorpay.Checkout;
+import com.razorpay.Order;
+import com.razorpay.PaymentData;
+import com.razorpay.PaymentResultWithDataListener;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,14 +50,20 @@ import java.util.Map;
 
 import static com.abfresh.in.Controller.SessionManagement.KEY_USERID;
 
-public class Wallet_Recharge extends AppCompatActivity {
+public class Wallet_Recharge extends AppCompatActivity implements PaymentResultWithDataListener {
+    private static final String TAG = "Wallet_Recharge";
     RadioGroup wr_radio_grp;
     RadioButton radioButton,wr_radio_btn1,wr_radio_btn2,wr_radio_btn3;
     EditText wr_amount_tv;
-    Button wr_proceed_btn;
+    Button btn_razorpay, btn_paytm;
     SessionManagement sessionManagement;
     ImageView wallrech_home_btn;
     public static FirebaseAnalytics mFirebaseAnalytics;
+    Order order = null;
+    String razorPay_OrderId="";
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,13 +74,16 @@ public class Wallet_Recharge extends AppCompatActivity {
         Toolbar toolbar=(Toolbar)findViewById(R.id.wallet_recharge_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+
+
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeButtonEnabled(true);
         wr_radio_grp = (RadioGroup)findViewById(R.id.wr_radio_grp);
         wr_radio_btn1 = (RadioButton) findViewById(R.id.wr_radio_btn1);
         wr_radio_btn2 = (RadioButton) findViewById(R.id.wr_radio_btn2);
         wr_radio_btn3 = (RadioButton) findViewById(R.id.wr_radio_btn3);
-        wr_proceed_btn = (Button) findViewById(R.id.wr_proceed_btn);
+        btn_paytm = (Button) findViewById(R.id.btn_paytm);
+        btn_razorpay = (Button) findViewById(R.id.btn_razorpay);
         wallrech_home_btn = (ImageView) findViewById(R.id.wallrech_home_btn);
 
         wr_amount_tv = (EditText) findViewById(R.id.wr_amount_tv);
@@ -93,12 +111,11 @@ public class Wallet_Recharge extends AppCompatActivity {
                     Log.w("WRTAG checkedId===>",checkedId+"");
                     wr_amount_tv.setText(radioButton.getText().toString().substring(2));
                 }
-
-
             }
         });
 
-        wr_proceed_btn.setOnClickListener(new View.OnClickListener() {
+
+        btn_razorpay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(wr_amount_tv.getText().toString().length()!=0){
@@ -111,13 +128,39 @@ public class Wallet_Recharge extends AppCompatActivity {
                         @Override
                         public void run() {
                             //start your activity here
-                            getWrCheckSum(progressDialog);
+                            getWrCheckSum(progressDialog, "razorpay");
 //                        progressDialog.dismiss();
 
                         }
 
                     }, 2000);
-//                    getWrCheckSum();
+
+                }else {
+                    Toast.makeText(Wallet_Recharge.this, "Please Enter Amount", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        btn_paytm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(wr_amount_tv.getText().toString().length()!=0){
+                    final ProgressDialog progressDialog = ProgressDialog.show(Wallet_Recharge.this, null, null, true);
+                    progressDialog.setContentView(R.layout.custom_progress_dialog);
+                    progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    progressDialog.show();
+                    Handler mHandler = new Handler();
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //start your activity here
+                            getWrCheckSum(progressDialog, "paytm");
+//                        progressDialog.dismiss();
+
+                        }
+
+                    }, 2000);
 
                 }else {
                     Toast.makeText(Wallet_Recharge.this, "Please Enter Amount", Toast.LENGTH_SHORT).show();
@@ -131,9 +174,150 @@ public class Wallet_Recharge extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        Checkout.preload(getApplicationContext());
+
     }
 
-    private void getWrCheckSum(ProgressDialog progressDialog) {
+
+    public void createOrder(HashMap<String, String> paramMap) {
+
+    try {
+            RazorpayClient razorpay = new RazorpayClient("rzp_test_eRad3o4HTL7VTk", "0WKVzNCjdF7dqKETnAhx001U");
+            double finalAmount = Integer.parseInt(paramMap.get("TXN_AMOUNT"))*100;
+
+            JSONObject orderRequest = new JSONObject();
+            orderRequest.put("amount", finalAmount); // amount in the smallest currency unit
+            orderRequest.put("currency", "INR");
+            orderRequest.put("receipt", paramMap.get("ORDER_ID"));
+
+
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        order = razorpay.Orders.create(orderRequest);
+                    } catch (RazorpayException e) {
+                        e.printStackTrace();
+                    }
+                    if(order!=null)
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            startPayment(order.get("id"), order.get("amount"));
+                        }
+                    });
+                }
+            };
+            new Thread(runnable).start();
+
+        } catch (RazorpayException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void startPayment(String order_id, int amount) {
+
+        final Activity activity = this;
+
+        final Checkout co = new Checkout();
+
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", "Razorpay");
+            options.put("description", "Demoing Charges");
+            options.put("send_sms_hash",true);
+            options.put("allow_rotation", true);
+            //You can omit the image option to fetch the image from dashboard
+            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
+            options.put("order_id", order_id);//
+            options.put("currency", "INR");
+            options.put("amount", amount);
+
+            JSONObject preFill = new JSONObject();
+            preFill.put("email", "test@razorpay.com");
+            preFill.put("contact", "9766024504");
+//            preFill.put("contact", "8788621395");
+
+            options.put("prefill", preFill);
+
+            co.open(activity, options);
+
+            Log.w("SHAN","options paramMap====>"+options+"");
+        } catch (Exception e) {
+            Toast.makeText(activity, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT)
+                    .show();
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Override
+    public void onPaymentSuccess(String s, PaymentData paymentData) {
+
+        Gson gson = new Gson();
+        String json = gson.toJson(paymentData);
+
+        String abc = json;
+
+
+        /*Toast.makeText(this, "orderId: "+paymentData.getOrderId()+"paymentId: "+paymentData.getPaymentId()+
+                "userContact: "+paymentData.getUserContact()+"userEmail: "+paymentData.getUserEmail()+"signature: "+paymentData.getSignature(),
+                Toast.LENGTH_SHORT).show();*/
+
+        HashMap<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("STATUS", "TXN_SUCCESS");
+        paramMap.put("CHECKSUMHASH","");
+        paramMap.put("BANKNAME","");
+        paramMap.put("ORDERID",razorPay_OrderId);
+        paramMap.put("USERID",sessionManagement.getUserDetails().get(KEY_USERID));
+        paramMap.put("TXNAMOUNT", wr_amount_tv.getText().toString().trim());
+        paramMap.put("TXNDATE","");
+        paramMap.put("MID","");
+        paramMap.put("RAZORPAYORDERID",paymentData.getOrderId());
+        paramMap.put("TXNID",paymentData.getPaymentId());
+        paramMap.put("RESPCODE","");
+        paramMap.put("PAYMENTMODE","Online");
+        paramMap.put("BANKTXNID","");
+        paramMap.put("CURRENCY","INR");
+        paramMap.put("GATEWAYNAME","razorpay");
+        paramMap.put("RESPMSG","");
+        updateRazorPayStatus(paramMap);
+    }
+
+    @Override
+    public void onPaymentError(int i, String s, PaymentData paymentData) {
+        Gson gson = new Gson();
+        String json = gson.toJson(paymentData);
+
+        String abc = json;
+        //Toast.makeText(this, "Failed and cause: "+s, Toast.LENGTH_SHORT).show();
+
+        HashMap<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("STATUS", "TXN_FAILED");
+        paramMap.put("CHECKSUMHASH","");
+        paramMap.put("BANKNAME","");
+        paramMap.put("ORDERID",razorPay_OrderId);
+        paramMap.put("USERID",sessionManagement.getUserDetails().get(KEY_USERID));
+        paramMap.put("TXNAMOUNT", wr_amount_tv.getText().toString().trim());
+        paramMap.put("TXNDATE","");
+        paramMap.put("MID","");
+        paramMap.put("RAZORPAYORDERID",paymentData.getOrderId());
+        paramMap.put("TXNID",paymentData.getPaymentId());
+        paramMap.put("RESPCODE","");
+        paramMap.put("PAYMENTMODE","Online");
+        paramMap.put("BANKTXNID","");
+        paramMap.put("CURRENCY","INR");
+        paramMap.put("GATEWAYNAME","razorpay");
+        paramMap.put("RESPMSG","");
+        updateRazorPayStatus(paramMap);
+    }
+
+
+    private void getWrCheckSum(ProgressDialog progressDialog, String paymentType) {
         try {
 
             JSONObject poObject = new JSONObject();
@@ -142,10 +326,12 @@ public class Wallet_Recharge extends AppCompatActivity {
             poObject.put("delivery_slot", "");
             poObject.put("delivery_slot_date", "");
             poObject.put("TXN_AMOUNT", wr_amount_tv.getText().toString().trim());
+//            poObject.put("TXN_AMOUNT", "1");
             poObject.put("type","Wallet");
             poObject.put("promo_code","");
             poObject.put("wallet_pay","0");
-            Log.w("SHAN","SHAN====>"+poObject+"");
+            poObject.put("via","Android");
+            Log.w("SHAN","SHAN====>"+poObject+"Url: "+Utility.getChecksum);
             JsonObjectRequest poRequest = new JsonObjectRequest(Request.Method.POST, Utility.getChecksum, poObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -162,14 +348,19 @@ public class Wallet_Recharge extends AppCompatActivity {
                             paramMap.put("TXN_Token", pObject.getString("txnToken"));
                             paramMap.put("TXN_AMOUNT", ""+response.getString("TXN_AMOUNT"));
                             paramMap.put("CALLBACK_URL", response.getString("CALLBACK_URL"));
-
+                            razorPay_OrderId =response.getString("order_id");
 
                             Log.w("SHAN","paramMap====>"+paramMap+"");
 
 //                            paytm_pb.setVisibility(View.GONE);
 
 //                            paramMap.put("CHECKSUMHASH", response.getString("CHECKSUMHASH"));
-                            onStartTransaction(paramMap);
+
+                            if(paymentType.equals("paytm")){
+                                onStartTransaction(paramMap);
+                            }else {
+                                createOrder(paramMap);
+                            }
 
                         }else{
                             progressDialog.cancel();
@@ -208,6 +399,7 @@ public class Wallet_Recharge extends AppCompatActivity {
         }
     }
 
+
     private void onStartTransaction(HashMap<String, String> paramMap) {
         String host = "https://securegw.paytm.in/";
 //        String host = "https://securegw-stage.paytm.in/";
@@ -241,8 +433,6 @@ public class Wallet_Recharge extends AppCompatActivity {
                     paramMap.put("RESPMSG",bundle.getString("RESPMSG"));
                     updateStatus(paramMap);
                 }
-
-
 
             }
 
@@ -287,12 +477,70 @@ public class Wallet_Recharge extends AppCompatActivity {
 
     }
 
+
+    private void updateRazorPayStatus(HashMap<String, String> paramMap) {
+        ProgressDialog dialog=new ProgressDialog(Wallet_Recharge.this);
+        dialog.setCancelable(false);
+        dialog.setMessage("Please wait....");
+        dialog.show();
+        Log.w("SHAN", "Params "+paramMap +"url: "+Utility.razorpaypayemntResponse);
+        CustomRequest poRequest = new CustomRequest(Request.Method.POST, Utility.razorpaypayemntResponse, paramMap, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.w("SHAN","SHAN response====>"+response+"");
+
+                try {
+
+                    if(response.getInt("success")==1){
+                        dialog.dismiss();
+                        Toast.makeText(Wallet_Recharge.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Wallet_Recharge.this,WalletActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        dialog.dismiss();
+                        Toast.makeText(Wallet_Recharge.this, "Please try after some time", Toast.LENGTH_SHORT).show();
+
+                    }
+                } catch (JSONException e) {
+                    dialog.dismiss();
+                    e.printStackTrace();
+                    Log.w("SHAN","SHAN JSONException====>"+e+"");
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                dialog.dismiss();
+                Log.w("SHAN","SHAN VolleyError====>"+error+"");
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String,String> header = new HashMap<>();
+                header.put(Utility.ServerUsername,Utility.ServerPassword);
+                return header;
+            }
+        };poRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        AppController.getInstance().addRequestInQueue(poRequest);
+
+
+
+    }
+
+
     private void updateStatus(HashMap<String, String> paramMap) {
         ProgressDialog dialog=new ProgressDialog(Wallet_Recharge.this);
         dialog.setCancelable(false);
         dialog.setMessage("Please wait....");
         dialog.show();
-        Log.w("SHAN", "Params "+paramMap);
+        Log.w("SHAN", "Params "+paramMap +"url: "+Utility.payemntResponse);
         CustomRequest poRequest = new CustomRequest(Request.Method.POST, Utility.payemntResponse, paramMap, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -303,7 +551,7 @@ public class Wallet_Recharge extends AppCompatActivity {
                     if(response.getInt("success")==1){
                         dialog.dismiss();
                         Toast.makeText(Wallet_Recharge.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Wallet_Recharge.this,Wallet.class);
+                        Intent intent = new Intent(Wallet_Recharge.this,WalletActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
@@ -417,4 +665,6 @@ public class Wallet_Recharge extends AppCompatActivity {
         }
 
     }
+
+
 }

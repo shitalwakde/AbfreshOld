@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,27 +39,30 @@ public class TransactionHistory extends AppCompatActivity {
     TransactionHistoryAdapter th_Adapter;
     SessionManagement sessionManagement;
     java.util.ArrayList<ArrayList> ThList;
-    ImageView thist_home_btn;
+    TextView tv_toolbar_title;
+    ImageView iv_back_arrow;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transaction_history);
         sessionManagement = new SessionManagement(getApplicationContext());
-        Toolbar toolbar=(Toolbar)findViewById(R.id.wallet_transaction_history_toolbar);
+
+        Toolbar toolbar = findViewById(R.id.toolbar_new);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
+        tv_toolbar_title=(TextView)findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("Transaction History");
 
-
+        iv_back_arrow=(ImageView)findViewById(R.id.iv_back_arrow);
         th_rv = (RecyclerView)findViewById(R.id.th_rv);
-        thist_home_btn = (ImageView) findViewById(R.id.thist_home_btn);
-        thist_home_btn.setOnClickListener(new View.OnClickListener() {
+
+        iv_back_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
         getTransactionHistory();
 
     }

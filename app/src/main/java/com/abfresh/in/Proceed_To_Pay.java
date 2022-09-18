@@ -1,5 +1,6 @@
 package com.abfresh.in;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -17,13 +18,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import com.abfresh.in.Abfresh.activities.CartActivity;
+import com.abfresh.in.Abfresh.activities.OrderDetailActivity;
+import com.abfresh.in.Abfresh.activities.ShippingDetailActivity;
+import com.abfresh.in.Controller.AppController;
+import com.abfresh.in.Controller.CustomRequest;
+import com.abfresh.in.Controller.SessionManagement;
+import com.abfresh.in.Controller.Utility;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -36,35 +43,37 @@ import com.muddzdev.styleabletoast.StyleableToast;
 import com.paytm.pgsdk.PaytmOrder;
 import com.paytm.pgsdk.PaytmPaymentTransactionCallback;
 import com.paytm.pgsdk.TransactionManager;
-import com.abfresh.in.Controller.AppController;
-import com.abfresh.in.Controller.CustomRequest;
-import com.abfresh.in.Controller.SessionManagement;
-import com.abfresh.in.Controller.Utility;
-
-//import net.one97.paytm.nativesdk.PaytmSDK;
-//import net.one97.paytm.nativesdk.dataSource.PaytmPaymentsUtilRepository;
+import com.razorpay.Checkout;
+import com.razorpay.Order;
+import com.razorpay.PaymentData;
+import com.razorpay.PaymentResultWithDataListener;
+import com.razorpay.RazorpayClient;
+import com.razorpay.RazorpayException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.abfresh.in.Controller.SessionManagement.KEY_City_ID;
+import static com.abfresh.in.Controller.SessionManagement.KEY_MOBILE;
 import static com.abfresh.in.Controller.SessionManagement.KEY_Pincode;
 import static com.abfresh.in.Controller.SessionManagement.KEY_USERID;
+import static com.abfresh.in.Controller.Utility.deliveryArea;
+import static com.abfresh.in.Controller.Utility.deliveryitemCount;
 
-public class Proceed_To_Pay extends AppCompatActivity {
-    Toolbar ptp_toolbar;
+
+public class Proceed_To_Pay extends AppCompatActivity implements PaymentResultWithDataListener {
+
     private SliderLayout ptpDemoSlider;
     RelativeLayout cod_ll;
     LinearLayout wallet_checked_ll;
     SessionManagement sessionManagement;
     ProgressBar paytm_pb;
     CardView delivery_coupans;
-    TextView ptp_item_tv,edit_slot_tv,ptp_delivery_slot,coupon_applied_tv,coupon_code_et,wallet_cash_tv;
-    ImageView ptp_home_btn,un_checked_iv,checked_iv;
+    TextView ptp_item_tv,edit_slot_tv,ptp_delivery_slot,coupon_applied_tv,coupon_code_et,wallet_cash_tv, tv_placeOrder, tv_totalAmtbill, tv_items, tv_address;
+    ImageView iv_back_arrow,un_checked_iv,checked_iv;
     Boolean checked=false;
     Boolean codeApply=false;
     int counter=0;
@@ -74,21 +83,36 @@ public class Proceed_To_Pay extends AppCompatActivity {
     String couponTotalAmount="0";
     String walletTotalAmount="0";
     Button coupon_code_apply_btn,coupon_code_remove_btn,coupon_code_view_btn;
-    TextView cong_msg,ptp_delivery_slot_date;
-    TextView sub_total_tv_ptp,offer_disc_tv_ptp,mod_amount_tv_ptp,total_amount_ptp_tv,wallet_total_tv_ptp,delivery_charge_tv_ptp;
+    TextView cong_msg,ptp_delivery_slot_date, tv_paytm_mobile;
+    TextView sub_total_tv_ptp,offer_disc_tv_ptp,mod_amount_tv_ptp,total_amount_ptp_tv,wallet_total_tv_ptp,delivery_charge_tv_ptp, tv_toolbar_title;
     LinearLayout pay_method_ll;
-    RelativeLayout llwalletpay,llPaytm;
+    RelativeLayout llwalletpay,llPaytm, llRazorPay, rl_razor, rl_paytm, rl_netbanking, rl_payonlinedelivery, rl_cashOndelivery;
     public static FirebaseAnalytics mFirebaseAnalytics;
+    Order order = null;
+    String razorPay_OrderId="", PlacePaymentType="";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.proceed_to_pay_layout);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(Proceed_To_Pay.this);
         mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
+
+        Toolbar toolbar = findViewById(R.id.toolbar_new);
+        setSupportActionBar(toolbar);
+        tv_toolbar_title=(TextView)findViewById(R.id.tv_toolbar_title);
+        tv_toolbar_title.setText("Choose Payment Option");
+
         sessionManagement = new SessionManagement(getApplicationContext());
-//        cartAmount =  CartDiscription.totalAmount;
-        cartAmount =  CartDiscription.totalWithDelivery;
+        cartAmount =  CartActivity.totalWithDelivery;
         llPaytm = (RelativeLayout) findViewById(R.id.llPaytm);
+        rl_paytm = (RelativeLayout) findViewById(R.id.rl_paytm);
+        rl_netbanking = (RelativeLayout) findViewById(R.id.rl_netbanking);
+        rl_cashOndelivery = (RelativeLayout) findViewById(R.id.rl_cashOndelivery);
+        rl_payonlinedelivery = (RelativeLayout) findViewById(R.id.rl_payonlinedelivery);
+        llRazorPay = (RelativeLayout) findViewById(R.id.llRazorPay);
+        rl_razor = (RelativeLayout) findViewById(R.id.rl_razor);
         wallet_checked_ll = (LinearLayout) findViewById(R.id.wallet_checked_ll);
         paytm_pb = (ProgressBar) findViewById(R.id.paytm_pb);
         delivery_coupans = (CardView) findViewById(R.id.delivery_coupans);
@@ -101,47 +125,85 @@ public class Proceed_To_Pay extends AppCompatActivity {
         wallet_total_tv_ptp = (TextView) findViewById(R.id.wallet_total_tv_ptp);
         delivery_charge_tv_ptp = (TextView) findViewById(R.id.delivery_charge_tv_ptp);
         ptp_delivery_slot_date = (TextView) findViewById(R.id.ptp_delivery_slot_date);
+        tv_paytm_mobile = (TextView) findViewById(R.id.tv_paytm_mobile);
+        iv_back_arrow=(ImageView)findViewById(R.id.iv_back_arrow);
+        iv_back_arrow.setVisibility(View.GONE);
 
         cong_msg = (TextView) findViewById(R.id.cong_msg);
         llwalletpay = (RelativeLayout) findViewById(R.id.llwalletpay);
         pay_method_ll = (LinearLayout) findViewById(R.id.pay_method_ll);
-        delivery_charge_tv_ptp.setText(CartDiscription.deliveryCharges);
-        if(delivery_charge_tv_ptp.getText().toString().equals("0")){
-            cong_msg.setVisibility(View.VISIBLE);
-        }else{
-            cong_msg.setVisibility(View.GONE);
-        }
-        sub_total_tv_ptp.setText("₹"+ CartDiscription.totalAmount);
-//        sub_total_tv_ptp.setText("₹"+ CartDiscription.totalWithDelivery);
-//        total_amount_ptp_tv.setText("₹"+CartDiscription.totalAmount);
-        total_amount_ptp_tv.setText("₹"+CartDiscription.totalWithDelivery);
+        tv_totalAmtbill = (TextView) findViewById(R.id.tv_totalAmtbill);
+        tv_items = (TextView) findViewById(R.id.tv_items);
+        tv_address = (TextView) findViewById(R.id.tv_address);
+
+
+        delivery_charge_tv_ptp.setText(CartActivity.deliveryCharges);
+        sub_total_tv_ptp.setText("₹"+ CartActivity.totalAmount);
+        total_amount_ptp_tv.setText("₹"+CartActivity.totalWithDelivery);
+        tv_totalAmtbill.setText("Total Bill: ₹"+CartActivity.totalWithDelivery);
+        tv_items.setText(deliveryitemCount+" items"+ Utility.deliverySlot);
+        tv_address.setText(deliveryArea);
 //        view_cpupon_tv = (TextView) findViewById(R.id.view_cpupon_tv);
         ptp_delivery_slot = (TextView) findViewById(R.id.ptp_delivery_slot);
         coupon_applied_tv = (TextView) findViewById(R.id.coupon_applied_tv);
         wallet_cash_tv = (TextView) findViewById(R.id.wallet_cash_tv);
-        ptp_home_btn = (ImageView) findViewById(R.id.ptp_home_btn);
+        tv_placeOrder = (TextView) findViewById(R.id.tv_placeOrder);
         un_checked_iv = (ImageView) findViewById(R.id.un_checked_iv);
         checked_iv = (ImageView) findViewById(R.id.checked_iv);
-        ptp_toolbar = (Toolbar)findViewById(R.id.ptp_toolbar);
         coupon_code_et = (TextView) findViewById(R.id.coupon_code_et);
         coupon_code_apply_btn = (Button) findViewById(R.id.coupon_code_apply_btn);
         coupon_code_remove_btn = (Button) findViewById(R.id.coupon_code_remove_btn);
         coupon_code_view_btn = (Button) findViewById(R.id.coupon_code_view_btn);
-        setSupportActionBar(ptp_toolbar);
-        getSupportActionBar().setTitle("");
         Log.w("PTPTAG","Delivery Date===>"+Utility.deliveryDay);
         ptp_delivery_slot_date.setText(Utility.deliveryDay);
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeButtonEnabled(true);
-        String item_count = String.valueOf(ChooseDelivery.product_quantity);
+
+
+        String item_count = String.valueOf(ShippingDetailActivity.product_quantity);
         if(item_count.equals("1")){
             ptp_item_tv.setText(item_count + " item will be delivered in 1 shipment");
         }else{
             ptp_item_tv.setText(item_count + " items will be delivered in 1 shipment");
         }
         ptp_delivery_slot.setText(Utility.deliverySlot);
+
 //        int color = getResources().getColor(R.color.colorPrimary);
 //        delivery_coupans.setCardBackgroundColor(color);
+
+        if(delivery_charge_tv_ptp.getText().toString().equals("0")){
+            cong_msg.setVisibility(View.VISIBLE);
+        }else{
+            cong_msg.setVisibility(View.GONE);
+        }
+
+        iv_back_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        tv_placeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(PlacePaymentType.isEmpty()){
+                    Toast.makeText(Proceed_To_Pay.this, "Please select payment type", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(Proceed_To_Pay.this, OrderDetailActivity.class);
+                    intent.putExtra("type", razorPay_OrderId);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        if(sessionManagement.getUserDetails().get(KEY_MOBILE) != null && ! sessionManagement.getUserDetails().get(KEY_MOBILE).isEmpty()){
+            tv_paytm_mobile.setText(sessionManagement.getUserDetails().get(KEY_MOBILE));
+        }else {
+            tv_paytm_mobile.setText("");
+        }
+
+
         wallet_checked_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,8 +218,7 @@ public class Proceed_To_Pay extends AppCompatActivity {
                     walletTotalAmount = walletMoney;
                     cod_ll.setVisibility(View.GONE);
                     int coupon_amount = Integer.parseInt(couponTotalAmount);
-//                    int cart_amount = Integer.parseInt(CartDiscription.totalAmount);
-                    int cart_amount = Integer.parseInt(CartDiscription.totalWithDelivery);
+                    int cart_amount = Integer.parseInt(CartActivity.totalWithDelivery);
                     int total_amount_below = cart_amount - coupon_amount;
                     int walletAmount = Integer.parseInt(walletMoney);
                     if(walletAmount>=total_amount_below){
@@ -181,7 +242,6 @@ public class Proceed_To_Pay extends AppCompatActivity {
                         total_amount_ptp_tv.setText("₹"+total_amount_below);
                     }
 
-
 //                    cartAmount = catTotal;
                 }else{
                     llwalletpay.setVisibility(View.GONE);
@@ -194,8 +254,7 @@ public class Proceed_To_Pay extends AppCompatActivity {
                     walletTotalAmount = walletMoney;
                     cod_ll.setVisibility(View.VISIBLE);
                     int coupon_amount = Integer.parseInt(couponTotalAmount);
-//                    int cart_amount = Integer.parseInt(CartDiscription.totalAmount);
-                    int cart_amount = Integer.parseInt(CartDiscription.totalWithDelivery);
+                    int cart_amount = Integer.parseInt(CartActivity.totalWithDelivery);
                     int total_amount_below = cart_amount - coupon_amount;
 
                     int walletAmount = Integer.parseInt(walletMoney);
@@ -213,7 +272,9 @@ public class Proceed_To_Pay extends AppCompatActivity {
                 }
             }
         });
+
         cod_ll = (RelativeLayout)findViewById(R.id.cod_ll);
+
         cod_ll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,8 +282,7 @@ public class Proceed_To_Pay extends AppCompatActivity {
                 progressDialog.setContentView(R.layout.custom_progress_dialog);
                 progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 progressDialog.show();
-//                cartAmount =  CartDiscription.totalAmount;
-                cartAmount =  CartDiscription.totalWithDelivery;
+                cartAmount =  CartActivity.totalWithDelivery;
                 int wallet_amount = Integer.parseInt(walletTotalAmount);
                 int coupon_amount = Integer.parseInt(couponTotalAmount);
                 int cart_amount = Integer.parseInt(cartAmount);
@@ -239,7 +299,6 @@ public class Proceed_To_Pay extends AppCompatActivity {
                         //start your activity here
                         placeOrderMethod();
 //                        progressDialog.dismiss();
-
                     }
 
                 }, 2000);
@@ -247,15 +306,79 @@ public class Proceed_To_Pay extends AppCompatActivity {
 
             }
         });
-        llPaytm.setOnClickListener(new View.OnClickListener() {
+
+
+        rl_cashOndelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePaymentType = "Cash On Delivery";
+                final ProgressDialog progressDialog = ProgressDialog.show(Proceed_To_Pay.this, null, null, true);
+                progressDialog.setContentView(R.layout.custom_progress_dialog);
+                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                progressDialog.show();
+                cartAmount =  CartActivity.totalWithDelivery;
+                int wallet_amount = Integer.parseInt(walletTotalAmount);
+                int coupon_amount = Integer.parseInt(couponTotalAmount);
+                int cart_amount = Integer.parseInt(cartAmount);
+                int cart_total = cart_amount - coupon_amount - wallet_amount;
+
+                String totalCart = String.valueOf(cart_total);
+                cartAmount = totalCart;
+
+
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //start your activity here
+                        placeOrderMethod();
+//                        progressDialog.dismiss();
+                    }
+
+                }, 2000);
+            }
+        });
+
+
+        rl_payonlinedelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePaymentType = "Pay Online on Delivery";
+                final ProgressDialog progressDialog = ProgressDialog.show(Proceed_To_Pay.this, null, null, true);
+                progressDialog.setContentView(R.layout.custom_progress_dialog);
+                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                progressDialog.show();
+                cartAmount =  CartActivity.totalWithDelivery;
+                int wallet_amount = Integer.parseInt(walletTotalAmount);
+                int coupon_amount = Integer.parseInt(couponTotalAmount);
+                int cart_amount = Integer.parseInt(cartAmount);
+                int cart_total = cart_amount - coupon_amount - wallet_amount;
+
+                String totalCart = String.valueOf(cart_total);
+                cartAmount = totalCart;
+
+
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //start your activity here
+                        placeOrderMethod();
+//                        progressDialog.dismiss();
+                    }
+
+                }, 2000);
+            }
+        });
+
+        rl_paytm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final ProgressDialog progressDialog = ProgressDialog.show(Proceed_To_Pay.this, null, null, true);
                 progressDialog.setContentView(R.layout.custom_progress_dialog);
                 progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 progressDialog.show();
-//                cartAmount =  CartDiscription.totalAmount;
-                cartAmount =  CartDiscription.totalWithDelivery;
+                cartAmount =  CartActivity.totalWithDelivery;
                 int wallet_amount = Integer.parseInt(walletTotalAmount);
                 int coupon_amount = Integer.parseInt(couponTotalAmount);
                 int cart_amount = Integer.parseInt(cartAmount);
@@ -269,7 +392,37 @@ public class Proceed_To_Pay extends AppCompatActivity {
                     @Override
                     public void run() {
                         //start your activity here
-                        getCheckSum(progressDialog);
+                        getCheckSum(progressDialog, "paytm");
+//                        progressDialog.dismiss();
+                    }
+
+                }, 2000);
+            }
+        });
+
+
+        rl_netbanking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ProgressDialog progressDialog = ProgressDialog.show(Proceed_To_Pay.this, null, null, true);
+                progressDialog.setContentView(R.layout.custom_progress_dialog);
+                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                progressDialog.show();
+                cartAmount =  CartActivity.totalWithDelivery;
+                int wallet_amount = Integer.parseInt(walletTotalAmount);
+                int coupon_amount = Integer.parseInt(couponTotalAmount);
+                int cart_amount = Integer.parseInt(cartAmount);
+                int cart_total = cart_amount - coupon_amount - wallet_amount;
+                String totalCart = String.valueOf(cart_total);
+                cartAmount = totalCart;
+
+                paytm_pb.setVisibility(View.VISIBLE);
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //start your activity here
+                        getCheckSum(progressDialog, "razorpay");
 //                        progressDialog.dismiss();
 
                     }
@@ -277,6 +430,40 @@ public class Proceed_To_Pay extends AppCompatActivity {
                 }, 2000);
             }
         });
+
+        rl_razor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ProgressDialog progressDialog = ProgressDialog.show(Proceed_To_Pay.this, null, null, true);
+                progressDialog.setContentView(R.layout.custom_progress_dialog);
+                progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                progressDialog.show();
+                cartAmount =  CartActivity.totalWithDelivery;
+                int wallet_amount = Integer.parseInt(walletTotalAmount);
+                int coupon_amount = Integer.parseInt(couponTotalAmount);
+                int cart_amount = Integer.parseInt(cartAmount);
+                int cart_total = cart_amount - coupon_amount - wallet_amount;
+                String totalCart = String.valueOf(cart_total);
+                cartAmount = totalCart;
+
+                paytm_pb.setVisibility(View.VISIBLE);
+                Handler mHandler = new Handler();
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //start your activity here
+                        getCheckSum(progressDialog, "razorpay");
+//                        progressDialog.dismiss();
+
+                    }
+
+                }, 2000);
+            }
+        });
+
+
+
+
         llwalletpay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -284,8 +471,7 @@ public class Proceed_To_Pay extends AppCompatActivity {
                 progressDialog.setContentView(R.layout.custom_progress_dialog);
                 progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 progressDialog.show();
-//                cartAmount =  CartDiscription.totalAmount;
-                cartAmount =  CartDiscription.totalWithDelivery;
+                cartAmount =  CartActivity.totalWithDelivery;
                 int wallet_amount = Integer.parseInt(walletTotalAmount);
                 int coupon_amount = Integer.parseInt(couponTotalAmount);
                 int cart_amount = Integer.parseInt(cartAmount);
@@ -299,7 +485,7 @@ public class Proceed_To_Pay extends AppCompatActivity {
                     @Override
                     public void run() {
                         //start your activity here
-                        getCheckSum(progressDialog);
+                        getCheckSum(progressDialog, "paytm");
 //                        progressDialog.dismiss();
 
                     }
@@ -307,20 +493,15 @@ public class Proceed_To_Pay extends AppCompatActivity {
                 }, 2000);
             }
         });
+
         edit_slot_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
 
             }
         });
 
-        ptp_home_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         coupon_code_apply_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -371,26 +552,99 @@ public class Proceed_To_Pay extends AppCompatActivity {
 
             }
         });
-            Log.w("PTPTAG", "ChooseDelivery.online_payment.toString().trim() :"+ChooseDelivery.online_payment.toString().trim());
-            Log.w("PTPTAG", "ChooseDelivery.wallet_payment.toString().trim() :"+ChooseDelivery.wallet_payment.toString().trim());
-            Log.w("PTPTAG", "ChooseDelivery.cod_payment.toString().trim() :"+ChooseDelivery.cod_payment.toString().trim());
-                if(ChooseDelivery.online_payment.toString().trim().equals("Yes")){
+            Log.w("PTPTAG", "ShippingDetailActivity.online_payment.toString().trim() :"+ ShippingDetailActivity.online_payment.toString().trim());
+            Log.w("PTPTAG", "ShippingDetailActivity.wallet_payment.toString().trim() :"+ShippingDetailActivity.wallet_payment.toString().trim());
+            Log.w("PTPTAG", "ShippingDetailActivity.cod_payment.toString().trim() :"+ShippingDetailActivity.cod_payment.toString().trim());
+                if(ShippingDetailActivity.online_payment.toString().trim().equals("Yes")){
                     llPaytm.setVisibility(View.VISIBLE);
                 }else{
                     llPaytm.setVisibility(View.GONE);
                 }
-                if(ChooseDelivery.wallet_payment.toString().trim().equals("Yes")){
+                if(ShippingDetailActivity.wallet_payment.toString().trim().equals("Yes")){
 //                    llwalletpay.setVisibility(View.VISIBLE);
                     pay_method_ll.setVisibility(View.VISIBLE);
                 }else{
 //                    llwalletpay.setVisibility(View.GONE);
                     pay_method_ll.setVisibility(View.GONE);
                 }
-                if(ChooseDelivery.cod_payment.toString().trim().equals("Yes")){
+                if(ShippingDetailActivity.cod_payment.toString().trim().equals("Yes")){
                     cod_ll.setVisibility(View.VISIBLE);
                 }else{
                     cod_ll.setVisibility(View.GONE);
                 }
+    }
+
+
+    public void createOrder(HashMap<String, String> paramMap) {
+
+        try {
+            RazorpayClient razorpay = new RazorpayClient("rzp_test_eRad3o4HTL7VTk", "0WKVzNCjdF7dqKETnAhx001U");
+            double finalAmount = Integer.parseInt(paramMap.get("TXN_AMOUNT"))*100;
+
+            JSONObject orderRequest = new JSONObject();
+            orderRequest.put("amount", finalAmount); // amount in the smallest currency unit
+            orderRequest.put("currency", "INR");
+            orderRequest.put("receipt", paramMap.get("ORDER_ID"));
+
+
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        order = razorpay.Orders.create(orderRequest);
+                    } catch (RazorpayException e) {
+                        e.printStackTrace();
+                    }
+                    if(order!=null)
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                startPayment(order.get("id"), order.get("amount"));
+                            }
+                        });
+                }
+            };
+            new Thread(runnable).start();
+
+        } catch (RazorpayException | JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void startPayment(String order_id, int amount) {
+
+        final Activity activity = this;
+
+        final Checkout co = new Checkout();
+
+
+        try {
+            JSONObject options = new JSONObject();
+            options.put("name", "Razorpay");
+            options.put("description", "Demoing Charges");
+            options.put("send_sms_hash",true);
+            options.put("allow_rotation", true);
+            //You can omit the image option to fetch the image from dashboard
+            options.put("image", "https://s3.amazonaws.com/rzp-mobile/images/rzp.png");
+            options.put("order_id", order_id);//
+            options.put("currency", "INR");
+            options.put("amount", amount);
+
+            JSONObject preFill = new JSONObject();
+            preFill.put("email", "test@razorpay.com");
+            preFill.put("contact", "9766024504");
+//            preFill.put("contact", "8788621395");
+
+            options.put("prefill", preFill);
+
+            co.open(activity, options);
+        } catch (Exception e) {
+            Toast.makeText(activity, "Error in payment: " + e.getMessage(), Toast.LENGTH_SHORT)
+                    .show();
+            e.printStackTrace();
+        }
     }
 
     private void removeCouponCode() {
@@ -419,8 +673,7 @@ public class Proceed_To_Pay extends AppCompatActivity {
                             couponTotalAmount = "0";
                             offer_disc_tv_ptp.setText("₹"+couponTotalAmount);
                             int coupon_amount = Integer.parseInt(couponTotalAmount);
-//                            int cart_amount = Integer.parseInt(CartDiscription.totalAmount);
-                            int cart_amount = Integer.parseInt(CartDiscription.totalWithDelivery);
+                            int cart_amount = Integer.parseInt(CartActivity.totalWithDelivery);
                             int total_amount_below = cart_amount - coupon_amount;
                             int walletAmount = Integer.parseInt(walletMoney);
                             if(walletAmount>=total_amount_below){
@@ -441,7 +694,6 @@ public class Proceed_To_Pay extends AppCompatActivity {
                             coupon_code_view_btn.setVisibility(View.VISIBLE);
                             coupon_applied_tv.setVisibility(View.GONE);
                             coupon_code_et.setText("Apply Coupon code");
-//                            cartAmount =  CartDiscription.totalAmount;
                             Handler mHandler = new Handler();
                             mHandler.postDelayed(new Runnable() {
                                 @Override
@@ -526,8 +778,7 @@ public class Proceed_To_Pay extends AppCompatActivity {
                             offer_disc_tv_ptp.setText("₹"+couponTotalAmount);
 
                             int coupon_amount = Integer.parseInt(couponTotalAmount);
-//                            int cart_amount = Integer.parseInt(CartDiscription.totalAmount);
-                            int cart_amount = Integer.parseInt(CartDiscription.totalWithDelivery);
+                            int cart_amount = Integer.parseInt(CartActivity.totalWithDelivery);
                             int total_amount_below = cart_amount - coupon_amount;
                             int walletAmount = Integer.parseInt(walletMoney);
                             if(walletAmount>=total_amount_below){
@@ -644,7 +895,7 @@ public class Proceed_To_Pay extends AppCompatActivity {
             coupon_code_view_btn.setVisibility(View.GONE);
             coupon_code_et.setText(Utility.couponCode);
             Utility.couponCode="";
-            applyCouponCode();
+//            applyCouponCode();
 
         }
 
@@ -761,7 +1012,8 @@ public class Proceed_To_Pay extends AppCompatActivity {
             poObject.put("pincode",sessionManagement.getUserDetails().get(KEY_Pincode));
             poObject.put("city_id",sessionManagement.getUserDetails().get(KEY_City_ID));
             poObject.put("delivery_location_id", Utility.Delivery_location_id);
-            poObject.put("payment_type","Cash On Delivery");
+//            poObject.put("payment_type","Cash On Delivery");
+            poObject.put("payment_type",PlacePaymentType);
             poObject.put("delivery_slot",Utility.deliverySlot);
             poObject.put("delivery_slot_date", Utility.deliveryDay);
             poObject.put("user_id",sessionManagement.getUserDetails().get(KEY_USERID));
@@ -777,9 +1029,10 @@ public class Proceed_To_Pay extends AppCompatActivity {
                     try {
 
                         if(response.getInt("success")==1){
-
+                            razorPay_OrderId= response.getString("order_id");
                             Toast.makeText(Proceed_To_Pay.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(Proceed_To_Pay.this,ThanksPage.class);
+                            Intent intent = new Intent(Proceed_To_Pay.this, OrderDetailActivity.class);
+                            intent.putExtra("type", razorPay_OrderId);
                             startActivity(intent);
                             finish();
                         }else{
@@ -814,15 +1067,15 @@ public class Proceed_To_Pay extends AppCompatActivity {
 
     }
 
-    private void getCheckSum(ProgressDialog progressDialog) {
+
+    private void getCheckSum(ProgressDialog progressDialog, String paymentType) {
 
         try {
 
             JSONObject poObject = new JSONObject();
 
-//            poObject.put("TXN_AMOUNT",cartAmount);
-//            poObject.put("TXN_AMOUNT",CartDiscription.totalWithDelivery);
             poObject.put("TXN_AMOUNT",total_amount_ptp_tv.getText().toString().trim());
+//            poObject.put("TXN_AMOUNT", "1");
             poObject.put("user_id",sessionManagement.getUserDetails().get(KEY_USERID));
             poObject.put("delivery_slot",Utility.deliverySlot);
             poObject.put("delivery_slot_date", Utility.deliveryDay);
@@ -833,7 +1086,7 @@ public class Proceed_To_Pay extends AppCompatActivity {
             poObject.put("wallet_pay",walletMoney);
 //            poObject.put("wallet_pay",wallet_cash_tv.getText().toString().trim());
 //            poObject.put("wallet_pay",walletMoney);
-            Log.w("SHAN","SHAN====>"+poObject+"");
+            Log.w("SHAN","SHAN====>"+poObject+" url : "+Utility.getChecksum);
             JsonObjectRequest poRequest = new JsonObjectRequest(Request.Method.POST, Utility.getChecksum, poObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -848,6 +1101,8 @@ public class Proceed_To_Pay extends AppCompatActivity {
                             paramMap.put("TXN_Token", pObject.getString("txnToken"));
                             paramMap.put("TXN_AMOUNT", ""+response.getString("TXN_AMOUNT"));
                             paramMap.put("CALLBACK_URL", response.getString("CALLBACK_URL"));
+
+                            razorPay_OrderId =response.getString("order_id");
 //                            paramMap.put("CHECKSUMHASH", response.getJSONObject("body").getString("txnToken"));
 //                            paramMap.put("CUST_ID", sessionManagement.getUserDetails().get("userid"));
 //
@@ -861,11 +1116,19 @@ public class Proceed_To_Pay extends AppCompatActivity {
                             paytm_pb.setVisibility(View.GONE);
                             progressDialog.cancel();
 //                            paramMap.put("CHECKSUMHASH", response.getString("CHECKSUMHASH"));
-                            onStartTransaction(paramMap);
+
+                            if(paymentType.equals("paytm")){
+                                onStartTransaction(paramMap);
+                            }else {
+                                createOrder(paramMap);
+                            }
+
                         }else if(response.getInt("success")==2){
-                            Intent intent = new Intent(Proceed_To_Pay.this,ThanksPage.class);
+                            Toast.makeText(Proceed_To_Pay.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            /*Intent intent = new Intent(Proceed_To_Pay.this,OrderDetailActivity.class);
+                            intent.putExtra("type", razorPay_OrderId);
                             startActivity(intent);
-                            finish();
+                            finish();*/
                         }else{
                             Toast.makeText(Proceed_To_Pay.this, "Please try after some time", Toast.LENGTH_SHORT).show();
                             paytm_pb.setVisibility(View.GONE);
@@ -1127,35 +1390,33 @@ public class Proceed_To_Pay extends AppCompatActivity {
     }
 
 
-    private void updateStatus(HashMap<String,String> poObject) {
+    private void updateStatus(HashMap<String, String> paramMap) {
 
         ProgressDialog  dialog=new ProgressDialog(Proceed_To_Pay.this);
         dialog.setCancelable(false);
         dialog.setMessage("Please wait....");
          dialog.show();
-         Log.w("SHAN", "Params "+poObject);
-            CustomRequest poRequest = new CustomRequest(Request.Method.POST, Utility.payemntResponse, poObject, new Response.Listener<JSONObject>() {
+        Log.w("SHAN", "Params "+paramMap +"url: "+Utility.payemntResponse);
+        CustomRequest poRequest = new CustomRequest(Request.Method.POST, Utility.payemntResponse, paramMap, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     Log.w("SHAN","SHAN response====>"+response+"");
 
                     try {
-
                         if(response.getInt("success")==1){
                             dialog.dismiss();
 //                            Toast.makeText(Proceed_To_Pay.this, response.getString("message"), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(Proceed_To_Pay.this,ThanksPage.class);
+                            Intent intent = new Intent(Proceed_To_Pay.this,OrderDetailActivity.class);
+                            intent.putExtra("type", razorPay_OrderId);
                             startActivity(intent);
                             finish();
                         }else{
                             dialog.dismiss();
                             Toast.makeText(Proceed_To_Pay.this, "Please try after some time", Toast.LENGTH_SHORT).show();
-
                         }
                     } catch (JSONException e) {
                         dialog.dismiss();
                         e.printStackTrace();
-
                     }
 
                 }
@@ -1179,4 +1440,113 @@ public class Proceed_To_Pay extends AppCompatActivity {
 
 
     }
+
+
+    private void updateRazorPayStatus(HashMap<String, String> paramMap) {
+
+        ProgressDialog  dialog=new ProgressDialog(Proceed_To_Pay.this);
+        dialog.setCancelable(false);
+        dialog.setMessage("Please wait....");
+         dialog.show();
+        Log.w("SHAN", "Params "+paramMap +"url: "+Utility.razorpaypayemntResponse);
+        CustomRequest poRequest = new CustomRequest(Request.Method.POST, Utility.razorpaypayemntResponse, paramMap, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.w("SHAN","SHAN response====>"+response+"");
+
+                    try {
+                        if(response.getInt("success")==1){
+                            dialog.dismiss();
+//                            Toast.makeText(Proceed_To_Pay.this, response.getString("message"), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(Proceed_To_Pay.this,OrderDetailActivity.class);
+                            intent.putExtra("type", razorPay_OrderId);
+                            startActivity(intent);
+                            finish();
+                        }else{
+                            dialog.dismiss();
+                            Toast.makeText(Proceed_To_Pay.this, "Please try after some time", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        dialog.dismiss();
+                        e.printStackTrace();
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                   // dialog.dismiss();
+                }
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String,String> header = new HashMap<>();
+                    header.put(Utility.ServerUsername,Utility.ServerPassword);
+                    return header;
+                }
+            };poRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            AppController.getInstance().addRequestInQueue(poRequest);
+
+
+
+    }
+
+    @Override
+    public void onPaymentSuccess(String s, PaymentData paymentData) {
+        Intent intent = new Intent(new Intent(Proceed_To_Pay.this, OrderDetailActivity.class));
+        intent.putExtra("type", razorPay_OrderId);
+        startActivity(intent);
+
+        /*Toast.makeText(this, "orderId: "+paymentData.getOrderId()+"paymentId: "+paymentData.getPaymentId()+
+                "userContact: "+paymentData.getUserContact()+"userEmail: "+paymentData.getUserEmail(), Toast.LENGTH_SHORT).show();*/
+
+        HashMap<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("STATUS", "TXN_SUCCESS");
+        paramMap.put("CHECKSUMHASH","");
+        paramMap.put("BANKNAME","");
+        paramMap.put("ORDERID",razorPay_OrderId);
+        paramMap.put("USERID",sessionManagement.getUserDetails().get(KEY_USERID));
+        paramMap.put("TXNAMOUNT", total_amount_ptp_tv.getText().toString().trim());
+        paramMap.put("TXNDATE","");
+        paramMap.put("MID","");
+        paramMap.put("RAZORPAYORDERID",paymentData.getOrderId());
+        paramMap.put("TXNID",paymentData.getPaymentId());
+        paramMap.put("RESPCODE","");
+        paramMap.put("PAYMENTMODE","Online");
+        paramMap.put("BANKTXNID","");
+        paramMap.put("CURRENCY","INR");
+        paramMap.put("GATEWAYNAME","razorpay");
+        paramMap.put("RESPMSG","");
+        updateRazorPayStatus(paramMap);
+    }
+
+
+    @Override
+    public void onPaymentError(int i, String s, PaymentData paymentData) {
+        //Toast.makeText(this, "failed and cause is: "+s, Toast.LENGTH_SHORT).show();
+
+
+        HashMap<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("STATUS", "TXN_FAILED");
+        paramMap.put("CHECKSUMHASH","");
+        paramMap.put("BANKNAME","");
+        paramMap.put("ORDERID",razorPay_OrderId);
+        paramMap.put("USERID",sessionManagement.getUserDetails().get(KEY_USERID));
+        paramMap.put("TXNAMOUNT", total_amount_ptp_tv.getText().toString().trim());
+        paramMap.put("TXNDATE","");
+        paramMap.put("MID","");
+        paramMap.put("RAZORPAYORDERID",paymentData.getOrderId());
+        paramMap.put("TXNID",paymentData.getPaymentId());
+        paramMap.put("RESPCODE","");
+        paramMap.put("PAYMENTMODE","Online");
+        paramMap.put("BANKTXNID","");
+        paramMap.put("CURRENCY","INR");
+        paramMap.put("GATEWAYNAME","razorpay");
+        paramMap.put("RESPMSG","");
+        updateRazorPayStatus(paramMap);
+    }
+
+
 }

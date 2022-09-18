@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="10dp"
-    android:background="@color/new_gray_color"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.Toolbar
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:layout_scrollFlags="scroll|enterAlways"
-        android:background="@color/new_gray_color"
+        android:background="@color/white"
         android:theme="@style/newToolbar"
         app:title=""
         app:contentInsetStart="0dp"
@@ -85,7 +85,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="120dp"
-        android:src="@drawable/new_logo_yellow"
+        android:src="@drawable/yellowlogo"
         android:layout_centerHorizontal="true"/>
     <TextView
         android:id="@+id/abfresh_tv_wr"
@@ -95,7 +95,8 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/poppins_medium"
         android:gravity="center_horizontal"
-        android:textColor="@color/newYellow"
+        android:textColor="@color/greydarker"
+        android:textStyle="bold"
         android:text="@string/app_name_wallet"
         android:textSize="16sp" />
     <ImageView
@@ -146,6 +147,7 @@
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/et_bg_new"
                 android:backgroundTint="@color/newYellow"
+                android:buttonTint="@color/greydarker"
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="#000"
                 android:textSize="14sp"/>
@@ -160,6 +162,7 @@
                 android:layout_marginEnd="5dp"
                 android:background="@drawable/et_bg_new"
                 android:backgroundTint="@color/newYellow"
+                android:buttonTint="@color/greydarker"
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="#000"
             android:textSize="14sp"/>
@@ -173,6 +176,7 @@
                 android:layout_gravity="end"
                 android:background="@drawable/et_bg_new"
                 android:backgroundTint="@color/newYellow"
+                android:buttonTint="@color/greydarker"
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="#000"
                 android:paddingHorizontal="10dp"
@@ -256,18 +260,38 @@
             android:visibility="gone"
             android:src="@drawable/new_line"/>
     </LinearLayout>
-<Button
-    android:id="@+id/wr_proceed_btn"
-    android:layout_width="match_parent"
-    android:layout_height="45dp"
-    android:textColor="@color/newYellow"
-    android:textSize="16sp"
-    android:textStyle="bold"
-    android:layout_below="@+id/wall_rec_ll"
-    android:fontFamily="@font/poppins_medium"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="20dp"
-    android:textAllCaps="false"
-    android:background="@drawable/refer_btn_bg"
-    android:text="Proceed"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wall_rec_ll"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_razorpay"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:textColor="@color/greydarker"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:textAllCaps="false"
+            android:background="@drawable/refer_btn_bg"
+            android:text="Razorpay"/>
+        <Button
+            android:id="@+id/btn_paytm"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:textColor="@color/greydarker"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_medium"
+            android:layout_marginEnd="20dp"
+            android:textAllCaps="false"
+            android:background="@drawable/refer_btn_bg"
+            android:text="Paytm"/>
+    </LinearLayout>
+
 </RelativeLayout>

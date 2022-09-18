@@ -53,13 +53,13 @@ import java.util.List;
             holder.slot1.setText(CartProductList.get(position).getChildItemTitle());
             if(CartProductList.get(position).getIs_disable().equals("No")){
                 holder.slot1.setEnabled(true);
-                holder.slot1.setTextColor(Context.getResources().getColor(R.color.white));
-                holder.icon_coupon_clock.setColorFilter(ContextCompat.getColor(Context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
+                holder.slot1.setTextColor(Context.getResources().getColor(R.color.greydarker));
+                holder.icon_coupon_clock.setColorFilter(ContextCompat.getColor(Context, R.color.greydarker), android.graphics.PorterDuff.Mode.SRC_IN);
 
             }else{
                 holder.slot1.setEnabled(false);
-                holder.slot1.setTextColor(Context.getResources().getColor(R.color.new_gray_color2));
-                holder.icon_coupon_clock.setColorFilter(ContextCompat.getColor(Context, R.color.new_gray_color2), android.graphics.PorterDuff.Mode.SRC_IN);
+                holder.slot1.setTextColor(Context.getResources().getColor(R.color.white));
+                holder.icon_coupon_clock.setColorFilter(ContextCompat.getColor(Context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN);
 
             }
             holder.slot1.setOnClickListener(new View.OnClickListener() {

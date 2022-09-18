@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Abfresh.activities.DeliveryListActivity">
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbaar_new"/>
+    <Button
+        android:id="@+id/btn_new_address"
+        android:layout_below="@+id/include"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:textColor="@color/purple_200"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/poppins_medium"
+        android:layout_margin="@dimen/_10sdp"
+        android:textAllCaps="false"
+        android:background="@drawable/background_off_yellow"
+        android:text="Add New Address"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_deliveryList"
+        android:layout_below="@+id/btn_new_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"/>
+
+</RelativeLayout>
